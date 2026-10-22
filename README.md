@@ -119,24 +119,18 @@ infra/grafana/                Provision datasource và dashboard
 infra/loki/                   Lưu trữ log tập trung
 infra/promtail/               Thu thập Docker logs, giới hạn service allowlist
 scripts/                      Sinh .env an toàn
-BAO-CAO.html                  Mẫu báo cáo 11 trang để điền thông tin và minh chứng
+BAO-CAO.html                  Báo cáo A4 13 trang, gồm ảnh giao diện local đã chụp
+evidence/                     Ảnh chụp thật; ảnh khách hàng đã làm mờ thông tin
 ```
 
 ## GitHub và bàn giao
 
-Khởi tạo private/public repository theo yêu cầu lớp học; đặt tên tài khoản/Repository theo mã số sinh viên. Từ thư mục dự án:
+Repository được đồng bộ tại <https://github.com/dtc245200669-bot/github-lab>, nhánh `main`; đã có ba commit riêng cho web/reverse proxy, monitoring và logging/báo cáo. Không commit `.env`, mật khẩu hoặc SQLite database. Lịch sử commit hiện có:
 
 ```bash
-git init
-git add .
-git commit -m "feat: add Nginx reverse proxy and deployment hardening"
-git add .
-git commit -m "feat: add Prometheus and Grafana monitoring"
-git add .
-git commit -m "feat: add Loki logging and deployment report"
-git branch -M main
-git remote add origin https://github.com/<student-id>/<repository>.git
-git push -u origin main
+92255f5 feat: deploy hardened billing app behind HTTPS Nginx
+c3c2da0 feat: add Prometheus and Grafana monitoring
+f909bbc feat: add Loki logging and deployment report
 ```
 
-Nếu cần đúng ba commit theo rubric, tạo từng commit theo các giai đoạn cấu hình tương ứng trước khi push; không đưa `.env` hoặc credential lên GitHub. Mẫu báo cáo nằm trong [`BAO-CAO.html`](./BAO-CAO.html); thay các trường sinh viên và chèn ảnh chụp màn hình thực tế trước khi in/xuất PDF.
+Tài liệu [`BAO-CAO.html`](./BAO-CAO.html) có 13 trang A4 và ảnh tự chụp từ ứng dụng local. Ảnh hiện có là giao diện ở `http://127.0.0.1:5000` chạy SQLite; chưa phải minh chứng Docker Compose. Cần bổ sung ảnh pgAdmin, Nginx/HTTPS, Prometheus, Grafana và Loki sau khi các container chạy thành công. Lần kiểm tra hiện tại `docker compose config --quiet` hợp lệ, nhưng Docker Desktop Linux engine vẫn `starting` và trả HTTP 500; xem Chương 8 trong báo cáo để biết mục nào chưa thể xác nhận.

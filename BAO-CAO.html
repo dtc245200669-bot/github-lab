@@ -48,6 +48,11 @@
     .diagram svg{display:block;width:100%;height:auto}
     .placeholder{display:grid;min-height:48mm;place-items:center;margin:7pt 0;padding:12pt;border:1.5px dashed #91a2b8;border-radius:7px;background:#f8fafc;color:#6e7d91;text-align:center}
     .placeholder strong{display:block;margin-bottom:4pt;color:var(--navy)}
+    .runtime-note{margin:9pt 0;padding:9pt 11pt;border:1px solid #f1d5a3;border-left:4px solid #d79532;border-radius:5px;background:#fff9ed;color:#70521e;font-size:9pt}
+    .evidence-grid{display:grid;grid-template-columns:1fr 1fr;gap:10pt}
+    .evidence-figure{min-width:0;margin:0;padding:6pt;border:1px solid var(--line);border-radius:6px;background:#fbfcfe}
+    .evidence-figure img{display:block;width:100%;height:62mm;object-fit:contain;background:#f2f5f9}
+    .evidence-figure figcaption{margin-top:5pt;color:var(--muted);font-size:8pt;line-height:1.35}
     .two-shot{display:grid;grid-template-columns:1fr 1fr;gap:9pt}
     .two-shot .placeholder{min-height:42mm}
     .page-no{position:absolute;right:20mm;bottom:9mm;color:#8290a2;font-size:8pt}
@@ -81,7 +86,7 @@
       <p class="muted" style="text-align:center">PostgreSQL · Nginx · Prometheus · Grafana · Loki</p>
       <table class="cover-table">
         <tr><td>Sinh viên thực hiện</td><td>[HỌ VÀ TÊN]</td></tr>
-        <tr><td>Mã số sinh viên</td><td>[MÃ SỐ SINH VIÊN]</td></tr>
+        <tr><td>Mã số sinh viên</td><td>DTC245200669</td></tr>
         <tr><td>Lớp / khóa</td><td>[LỚP / KHÓA]</td></tr>
         <tr><td>Giảng viên hướng dẫn</td><td>[HỌ TÊN GIẢNG VIÊN]</td></tr>
       </table>
@@ -106,7 +111,7 @@
       <li>Hardening và phân tích rủi ro.</li><li>Triển khai, kiểm thử và minh chứng.</li>
       <li>Vận hành, sao lưu và kết luận.</li>
     </ol>
-    <p class="small muted">Cập nhật tài liệu: 22/10/2026. Điền thông tin cá nhân và thay các khung minh chứng bằng ảnh chụp thật trước khi nộp.</p>
+    <p class="small muted">Cập nhật tài liệu: 22/10/2026. Mã số sinh viên được điền theo tài khoản GitHub cung cấp; bổ sung họ tên, lớp, trường và giảng viên trước khi nộp.</p>
     <span class="page-no">02</span>
   </section>
 
@@ -187,7 +192,7 @@
     <p>Khóa chính dùng identity; khóa ngoại bảo vệ tính toàn vẹn. Xóa hóa đơn áp dụng cascade với chi tiết/thanh toán; khi xóa sản phẩm, snapshot tên và đơn giá trong chi tiết vẫn lưu. Tài khoản <code>billing_app</code> chỉ dùng cho ứng dụng, còn <code>billing_metrics</code> có quyền monitor riêng để exporter đọc chỉ số. Tài khoản bootstrap PostgreSQL không được dùng trong cấu hình ứng dụng.</p>
     <h3>3.3 pgAdmin và dữ liệu cũ</h3>
     <p>pgAdmin đăng ký sẵn server nội bộ tên Billing PostgreSQL. Người học đăng nhập giao diện bằng credential pgAdmin trong `.env`, sau đó nhập mật khẩu <code>APP_DB_PASSWORD</code> khi kết nối server DB. Cổng PostgreSQL không được publish. Nếu dự án có file SQLite cũ, startup chỉ nhập dữ liệu khi database PostgreSQL còn trống; import đọc file ở chế độ chỉ đọc, theo thứ tự khóa ngoại và đặt lại identity sequence. Nếu không có file hoặc DB đã có dữ liệu, việc import không chạy lại.</p>
-    <div class="placeholder"><div><strong>Hình 3.1 — Chèn ảnh pgAdmin</strong>Chụp cây server đã kết nối và danh sách các bảng trong schema public.<br>Không hiển thị mật khẩu hoặc nội dung `.env` trong ảnh.</div></div>
+    <div class="runtime-note"><strong>Minh chứng pgAdmin:</strong> chưa thể chụp ảnh kết nối thật vì Docker Desktop Linux engine chưa khởi động. Cấu hình server khai báo trong <code>infra/pgadmin/servers.json</code>; cần bổ sung ảnh pgAdmin sau khi chạy stack.</div>
     <span class="page-no">05</span>
   </section>
 
@@ -207,7 +212,7 @@
       <tr><td>Referrer-Policy / Permissions-Policy</td><td>Giảm dữ liệu referrer và vô hiệu hóa cảm biến không dùng.</td></tr>
     </table>
     <p>Ứng dụng hiện có inline event handlers, do đó CSP có <code>unsafe-inline</code> cho script/style để duy trì tương thích. Đây là thỏa hiệp cho giao diện học tập; ứng dụng production nên chuyển event handlers và style inline ra tệp riêng để loại bỏ ngoại lệ này. HSTS chỉ phù hợp trong phạm vi demo HTTPS; không bật preload trên tên miền công khai nếu chưa có TLS hợp lệ.</p>
-    <div class="placeholder"><div><strong>Hình 4.1 — Chèn minh chứng reverse proxy</strong>Chụp website mở tại <code>https://localhost:8443</code> và kết quả kiểm tra response headers trong DevTools hoặc curl.</div></div>
+    <div class="runtime-note"><strong>Minh chứng Nginx/HTTPS:</strong> cấu hình đã có trong repository nhưng endpoint <code>https://localhost:8443</code> chưa hoạt động để chụp. Ảnh website local ở Phụ lục A không phải ảnh truy cập qua Nginx.</div>
     <span class="page-no">06</span>
   </section>
 
@@ -232,7 +237,7 @@ sum(rate(container_cpu_usage_seconds_total{name=~"/.+"}[5m])) by (name)
 pg_up
 nginx_connections_active</pre>
     <p>Dashboard cần thời gian và request thực tế để biểu đồ có dữ liệu. Nếu target DOWN, xem **Status → Targets**, kiểm tra DNS/service, `docker compose ps`, healthcheck, exporter credentials và log Prometheus. cAdvisor trên Docker Desktop có thể báo thiếu một số chỉ số host do khác biệt nền tảng; đánh giá chính container Linux do Docker quản lý.</p>
-    <div class="placeholder"><div><strong>Hình 5.1 — Chèn ảnh Prometheus Targets</strong>Chụp màn hình thể hiện các job <code>billing-web</code>, <code>nginx</code>, <code>postgres</code> và <code>containers</code> ở trạng thái UP.</div></div>
+    <div class="runtime-note"><strong>Minh chứng monitoring:</strong> dashboard và scrape targets đã khai báo trong cấu hình. Không có ảnh target UP vì Prometheus chưa chạy; không dùng ảnh cấu hình để thay cho minh chứng metrics thực tế.</div>
     <span class="page-no">07</span>
   </section>
 
@@ -250,7 +255,7 @@ nginx_connections_active</pre>
     </table>
     <p>Truy vấn thứ nhất hữu ích để xem log chung của backend; truy vấn thứ hai lọc access log theo request GET; truy vấn thứ ba dùng regex không phân biệt hoa/thường để phát hiện thông báo ERROR hoặc FATAL. Có thể thêm bộ lọc theo thời gian, ví dụ last 15 minutes. Chụp ảnh mỗi truy vấn sau khi thực thi và có kết quả; không dùng ảnh cấu hình chưa chạy như minh chứng hoạt động.</p>
     <div class="callout"><strong>Giới hạn an ninh.</strong> Docker socket là giao diện điều khiển Docker host; mount read-only không giới hạn các lệnh API có thể gửi qua socket. Đây là rủi ro đặc quyền của cách thu log demo. Production nên chuyển sang agent/driver được kiểm soát chặt, remote logging hoặc cơ chế host log forwarding riêng.</div>
-    <div class="placeholder"><div><strong>Hình 6.1 — Chèn ảnh Grafana Explore</strong>Chụp một truy vấn LogQL có label <code>compose_service</code> và log kết quả thực tế.</div></div>
+    <div class="runtime-note"><strong>Minh chứng LogQL:</strong> ba truy vấn mẫu đã được ghi ở trên. Loki/Promtail chưa chạy để trả về log; cần chụp Grafana Explore sau khi Docker engine hoạt động.</div>
     <span class="page-no">08</span>
   </section>
 
@@ -287,19 +292,16 @@ nginx_connections_active</pre>
     </ol>
     <h3>8.2 Bảng kiểm nghiệm thu</h3>
     <table><tr><th>Kiểm tra</th><th>Lệnh / thao tác</th><th>Kết quả cần ghi nhận</th><th>Trạng thái</th></tr>
-      <tr><td>Stack</td><td><code>docker compose ps</code></td><td>Services Running/Healthy</td><td>[ĐIỀN]</td></tr>
-      <tr><td>Web + HTTPS</td><td>Mở <code>https://localhost:8443</code></td><td>Trang trả về, self-signed cảnh báo dự kiến</td><td>[ĐIỀN]</td></tr>
-      <tr><td>DB health</td><td><code>/health</code> qua Nginx</td><td>JSON status/database = ok</td><td>[ĐIỀN]</td></tr>
-      <tr><td>pgAdmin</td><td>Đăng nhập và mở server</td><td>Thấy DB billing và bảng ứng dụng</td><td>[ĐIỀN]</td></tr>
-      <tr><td>Metrics</td><td>Prometheus → Status → Targets</td><td>Targets web, nginx, postgres, containers UP</td><td>[ĐIỀN]</td></tr>
-      <tr><td>Grafana</td><td>Billing System Overview</td><td>Datasource provision, chart khi có traffic</td><td>[ĐIỀN]</td></tr>
-      <tr><td>LogQL</td><td>Ba truy vấn trong Chương 6</td><td>Trả về stream/log thực tế</td><td>[ĐIỀN]</td></tr>
-      <tr><td>Hardening</td><td>Header, user, ports, networks</td><td>Đối chiếu Compose và response</td><td>[ĐIỀN]</td></tr>
+      <tr><td>Compose</td><td><code>docker compose config --quiet</code></td><td>Cấu hình hợp lệ về cú pháp</td><td>ĐẠT (tĩnh)</td></tr>
+      <tr><td>Ứng dụng local</td><td><code>http://127.0.0.1:5000</code></td><td>Trang local trả HTTP 200; dùng SQLite dev</td><td>ĐẠT (local)</td></tr>
+      <tr><td>Compose stack</td><td><code>docker compose up --build -d</code></td><td>Docker engine trả HTTP 500, Docker Desktop vẫn Starting</td><td>CHƯA CHẠY</td></tr>
+      <tr><td>HTTPS / pgAdmin</td><td>Cổng 8443 / 5050</td><td>Không có container để kiểm thử endpoint</td><td>CHƯA KIỂM THỬ</td></tr>
+      <tr><td>Metrics / Grafana</td><td>Prometheus targets / dashboard</td><td>Chưa có runtime metrics</td><td>CHƯA KIỂM THỬ</td></tr>
+      <tr><td>Loki / LogQL</td><td>Grafana Explore</td><td>Chưa có log stream từ Compose</td><td>CHƯA KIỂM THỬ</td></tr>
+      <tr><td>Hardening</td><td>Compose / Nginx headers</td><td>Cấu hình đọc/kiểm tra tĩnh; response HTTPS chưa xác nhận</td><td>ĐẠT (tĩnh)</td></tr>
     </table>
-    <div class="two-shot">
-      <div class="placeholder"><div><strong>Hình 8.1 — Thêm ảnh Docker Compose</strong>Ảnh trạng thái container, không để lộ biến môi trường.</div></div>
-      <div class="placeholder"><div><strong>Hình 8.2 — Thêm ảnh website</strong>Ảnh trang dashboard qua HTTPS reverse proxy.</div></div>
-    </div>
+    <div class="runtime-note"><strong>Trạng thái lần kiểm tra:</strong> Docker Compose config hợp lệ; website local trả HTTP 200. Docker Desktop vẫn báo <code>starting</code>, WSL distro <code>docker-desktop</code> ở trạng thái stopped và API Linux engine trả HTTP 500. Vì vậy stack chưa được build/run và các yêu cầu runtime còn phải demo, chụp ảnh sau khi sửa Docker Desktop.</div>
+    <p class="small muted">Ảnh chụp giao diện local thật nằm tại Phụ lục A. Chúng được chụp từ <code>http://127.0.0.1:5000</code> (chế độ SQLite local), không được xem là bằng chứng Nginx/PostgreSQL/monitoring đã chạy.</p>
     <span class="page-no">10</span>
   </section>
 
@@ -348,13 +350,38 @@ docker compose down</pre>
     <h3>Checklist trước khi nộp</h3>
     <ul>
       <li>Điền tên trường, họ tên, mã số sinh viên, lớp và giảng viên trên bìa.</li>
-      <li>Thực sự chạy toàn bộ stack và điền kết quả từng dòng kiểm thử.</li>
-      <li>Thay khung minh chứng bằng ảnh tự chụp từ môi trường của mình.</li>
+      <li>Khởi động Docker engine, chạy toàn bộ stack và cập nhật những mục đang CHƯA KIỂM THỬ.</li>
+      <li>Tự chụp bổ sung pgAdmin, HTTPS headers, Prometheus targets, Grafana dashboard và LogQL sau khi chạy stack.</li>
       <li>Kiểm tra không có `.env`, password, backup hoặc dữ liệu riêng tư trong Git.</li>
       <li>In/xuất trang này bằng trình duyệt: Print → Save as PDF, khổ A4.</li>
     </ul>
     <div class="signatures"><div>Sinh viên thực hiện<br><strong>[HỌ VÀ TÊN]</strong></div><div>Giảng viên hướng dẫn<br><strong>[HỌ VÀ TÊN]</strong></div></div>
     <span class="page-no">12</span>
+  </section>
+  <section class="sheet">
+    <div class="eyebrow">Phụ lục A</div><div class="rule"></div>
+    <h2>Ảnh giao diện ứng dụng local</h2>
+    <p>Các ảnh được chụp trực tiếp từ trình duyệt ở <code>http://127.0.0.1:5000</code> ngày 22/10/2026. Đây là server local đang dùng SQLite và dữ liệu mẫu hiện có; không phải ảnh chụp từ Docker Compose, PostgreSQL, Nginx HTTPS, Grafana hoặc Loki. Thông tin khách hàng trong ảnh đã được làm mờ.</p>
+    <div class="evidence-grid">
+      <figure class="evidence-figure">
+        <img src="./evidence/01-website-local.png" alt="Ảnh chụp trang tổng quan website local">
+        <figcaption>Hình A.1 — Dashboard ứng dụng local; server trả HTTP 200.</figcaption>
+      </figure>
+      <figure class="evidence-figure">
+        <img src="./evidence/02-customers-local.png" alt="Ảnh chụp trang khách hàng, dữ liệu đã làm mờ">
+        <figcaption>Hình A.2 — Trang khách hàng; thông tin liên hệ đã làm mờ.</figcaption>
+      </figure>
+      <figure class="evidence-figure">
+        <img src="./evidence/03-products-local.png" alt="Ảnh chụp trang sản phẩm website local">
+        <figcaption>Hình A.3 — Danh sách sản phẩm và tồn kho trên server local.</figcaption>
+      </figure>
+      <figure class="evidence-figure">
+        <img src="./evidence/04-reports-local.png" alt="Ảnh chụp trang báo cáo website local">
+        <figcaption>Hình A.4 — Trang báo cáo; database demo hiện chưa có hóa đơn.</figcaption>
+      </figure>
+    </div>
+    <div class="runtime-note"><strong>Ảnh runtime còn thiếu:</strong> pgAdmin, Nginx/HTTPS, Prometheus Targets, Grafana Dashboard và Loki Explore chỉ có thể chụp sau khi Docker Desktop Linux engine hoạt động. Không thay các ảnh này bằng hình minh họa giả.</div>
+    <span class="page-no">13</span>
   </section>
 </body>
 </html>
