@@ -53,6 +53,10 @@
     .evidence-figure{min-width:0;margin:0;padding:6pt;border:1px solid var(--line);border-radius:6px;background:#fbfcfe}
     .evidence-figure img{display:block;width:100%;height:62mm;object-fit:contain;background:#f2f5f9}
     .evidence-figure figcaption{margin-top:5pt;color:var(--muted);font-size:8pt;line-height:1.35}
+    .evidence-large{display:block;margin:7pt 0 0;padding:5pt;border:1px solid var(--line);border-radius:6px;background:#fbfcfe}
+    .evidence-large img{display:block;width:100%;height:178mm;object-fit:contain;object-position:center top;background:#f2f5f9}
+    .evidence-large figcaption{margin-top:7pt;color:var(--muted);font-size:9pt;line-height:1.4}
+    .evidence-output{margin:6pt 0 0;padding:7pt 9pt;border-radius:4px;background:#17253a;color:#e5edf7;font:8.5pt/1.45 Consolas,"Courier New",monospace;overflow-wrap:anywhere}
     .page-illustration{display:grid;grid-template-columns:68mm 1fr;align-items:center;gap:10pt;margin:7pt 0 0;padding:5pt;border:1px solid var(--line);border-radius:5px;background:#fbfcfe}
     .page-illustration img{display:block;width:100%;height:26mm;object-fit:cover;object-position:center 24%;background:#f2f5f9}
     .page-illustration figcaption{color:var(--muted);font-size:8pt;line-height:1.35}
@@ -218,7 +222,7 @@
     <p>Khóa chính dùng identity; khóa ngoại bảo vệ tính toàn vẹn. Xóa hóa đơn áp dụng cascade với chi tiết/thanh toán; khi xóa sản phẩm, snapshot tên và đơn giá trong chi tiết vẫn lưu. Tài khoản <code>billing_app</code> chỉ dùng cho ứng dụng, còn <code>billing_metrics</code> có quyền monitor riêng để exporter đọc chỉ số. Tài khoản bootstrap PostgreSQL không được dùng trong cấu hình ứng dụng.</p>
     <h3>3.3 pgAdmin và dữ liệu cũ</h3>
     <p>pgAdmin đăng ký sẵn server nội bộ tên Billing PostgreSQL. Người học đăng nhập giao diện bằng credential pgAdmin trong `.env`, sau đó nhập mật khẩu <code>APP_DB_PASSWORD</code> khi kết nối server DB. Cổng PostgreSQL không được publish. Nếu dự án có file SQLite cũ, startup chỉ nhập dữ liệu khi database PostgreSQL còn trống; import đọc file ở chế độ chỉ đọc, theo thứ tự khóa ngoại và đặt lại identity sequence. Nếu không có file hoặc DB đã có dữ liệu, việc import không chạy lại.</p>
-    <div class="runtime-note"><strong>Kiểm thử runtime:</strong> pgAdmin đã kết nối server Billing PostgreSQL; database <code>billing</code>, schema <code>public</code> và năm bảng nghiệp vụ được xác nhận. Ảnh Object Explorer nằm tại Phụ lục C.</div>
+    <div class="runtime-note"><strong>Kiểm thử runtime:</strong> pgAdmin đã kết nối server Billing PostgreSQL; database <code>billing</code>, schema <code>public</code> và năm bảng nghiệp vụ được xác nhận. Ảnh Object Explorer nằm tại Phụ lục G.</div>
     <figure class="page-illustration">
       <img src="./evidence/08-pgadmin-schema.png" alt="pgAdmin hiển thị database billing và năm bảng ứng dụng">
       <figcaption>Object Explorer xác nhận schema <code>public</code> gồm customers, products, invoices, invoice_items và payments.</figcaption>
@@ -242,7 +246,7 @@
       <tr><td>Referrer-Policy / Permissions-Policy</td><td>Giảm dữ liệu referrer và vô hiệu hóa cảm biến không dùng.</td></tr>
     </table>
     <p>Ứng dụng hiện có inline event handlers, do đó CSP có <code>unsafe-inline</code> cho script/style để duy trì tương thích. Đây là thỏa hiệp cho giao diện học tập; ứng dụng production nên chuyển event handlers và style inline ra tệp riêng để loại bỏ ngoại lệ này. HSTS chỉ phù hợp trong phạm vi demo HTTPS; không bật preload trên tên miền công khai nếu chưa có TLS hợp lệ.</p>
-    <div class="runtime-note"><strong>Kiểm thử runtime:</strong> <code>https://localhost:8443/health</code> trả HTTP 200 và JSON xác nhận database ok. Đã kiểm tra HSTS, CSP, X-Frame-Options, nosniff, Referrer-Policy và Permissions-Policy. Trình duyệt cảnh báo CA tự ký là hành vi dự kiến; lệnh kiểm tra dùng <code>curl.exe -k</code>.</div>
+    <div class="runtime-note"><strong>Kiểm thử runtime:</strong> <code>https://localhost:8443/health</code> trả HTTP 200 và JSON xác nhận database ok. Đã kiểm tra HSTS, CSP, X-Frame-Options, nosniff, Referrer-Policy và Permissions-Policy. Trình duyệt cảnh báo CA tự ký là hành vi dự kiến; lệnh kiểm tra dùng <code>curl.exe -k</code>. Ảnh website ở Phụ lục F.</div>
     <figure class="page-illustration">
       <img src="./evidence/06-website-https.png" alt="Website Billing được phục vụ qua HTTPS Nginx">
       <figcaption>Website được truy cập qua TLS; response có HSTS, CSP, X-Frame-Options và các header bảo vệ trình duyệt.</figcaption>
@@ -271,7 +275,7 @@ sum(rate(container_cpu_usage_seconds_total{name=~"/.+"}[5m])) by (name)
 pg_up
 nginx_connections_active</pre>
     <p>Dashboard cần thời gian và request thực tế để biểu đồ có dữ liệu. Nếu target DOWN, xem **Status → Targets**, kiểm tra DNS/service, `docker compose ps`, healthcheck, exporter credentials và log Prometheus. cAdvisor trên Docker Desktop có thể báo thiếu một số chỉ số host do khác biệt nền tảng; đánh giá chính container Linux do Docker quản lý.</p>
-    <div class="runtime-note"><strong>Kiểm thử runtime:</strong> Prometheus trả HTTP 200; cả năm scrape targets <code>billing-web</code>, <code>containers</code>, <code>nginx</code>, <code>postgres</code> và <code>prometheus</code> đều UP. Grafana dashboard được provision; sáu panel có dữ liệu, gồm request rate, p95, bộ nhớ/CPU container, <code>pg_up</code> và kết nối Nginx. Ảnh Targets ở Phụ lục B và dashboard ở Phụ lục D.</div>
+    <div class="runtime-note"><strong>Kiểm thử runtime:</strong> Prometheus trả HTTP 200; cả năm scrape targets <code>billing-web</code>, <code>containers</code>, <code>nginx</code>, <code>postgres</code> và <code>prometheus</code> đều UP. Grafana dashboard được provision; sáu panel có dữ liệu, gồm request rate, p95, bộ nhớ/CPU container, <code>pg_up</code> và kết nối Nginx. Ảnh Targets ở Phụ lục E, dashboard ở Phụ lục H–I.</div>
     <figure class="page-illustration short">
       <img src="./evidence/07-grafana-dashboard.png" alt="Grafana dashboard với biểu đồ request, latency và tài nguyên container">
       <figcaption>Dashboard runtime hiển thị request rate, p95 và bộ nhớ container; các panel PostgreSQL/Nginx được chụp ở Phụ lục D.</figcaption>
@@ -293,7 +297,7 @@ nginx_connections_active</pre>
     </table>
     <p>Truy vấn thứ nhất hữu ích để xem log chung của backend; truy vấn thứ hai lọc access log theo request GET; truy vấn thứ ba dùng regex không phân biệt hoa/thường để phát hiện thông báo ERROR hoặc FATAL. Có thể thêm bộ lọc theo thời gian, ví dụ last 15 minutes. Chụp ảnh mỗi truy vấn sau khi thực thi và có kết quả; không dùng ảnh cấu hình chưa chạy như minh chứng hoạt động.</p>
     <div class="callout"><strong>Giới hạn an ninh.</strong> Docker socket là giao diện điều khiển Docker host; mount read-only không giới hạn các lệnh API có thể gửi qua socket. Đây là rủi ro đặc quyền của cách thu log demo. Production nên chuyển sang agent/driver được kiểm soát chặt, remote logging hoặc cơ chế host log forwarding riêng.</div>
-    <div class="runtime-note"><strong>Kiểm thử runtime:</strong> endpoint readiness của Loki trả <code>ready</code>, labels API có <code>compose_service</code> và truy vấn <code>{compose_service="billing"}</code> trả về log request thật do Promtail gửi. Loki không publish cổng ra host; truy vấn kiểm thử được thực hiện từ Grafana Explore trên network nội bộ. Ảnh truy vấn LogQL nằm tại Phụ lục D.</div>
+    <div class="runtime-note"><strong>Kiểm thử runtime:</strong> endpoint readiness của Loki trả <code>ready</code>, labels API có <code>compose_service</code> và truy vấn <code>{compose_service="billing"}</code> trả về log request thật do Promtail gửi. Loki không publish cổng ra host; truy vấn kiểm thử được thực hiện từ Grafana Explore trên network nội bộ. Ảnh LogQL nằm tại Phụ lục J–L.</div>
     <figure class="page-illustration short">
       <img src="./evidence/09-loki-explore.png" alt="Grafana Explore lọc request health bằng LogQL">
       <figcaption>Truy vấn mẫu: <code>{compose_service="billing"} |= "GET /health"</code>.</figcaption>
@@ -418,7 +422,7 @@ docker compose down</pre>
     <h3>Checklist trước khi nộp</h3>
     <ul>
       <li>Điền họ tên, lớp, trường và giảng viên hướng dẫn trên bìa và trang ký.</li>
-      <li>Đối chiếu các ảnh runtime ở Phụ lục B–D với giao diện sau khi chạy stack trên máy demo.</li>
+      <li>Đối chiếu ảnh runtime ở Phụ lục E–L với giao diện sau khi chạy stack trên máy demo.</li>
       <li>Kiểm tra không có `.env`, password, backup hoặc dữ liệu riêng tư trong Git.</li>
       <li>In/xuất trang này bằng trình duyệt: Print → Save as PDF, khổ A4.</li>
     </ul>
@@ -426,98 +430,90 @@ docker compose down</pre>
     <span class="page-no">12</span>
   </section>
   <section class="sheet">
-    <div class="eyebrow">Phụ lục A</div><div class="rule"></div>
-    <h2>Ảnh giao diện ứng dụng local</h2>
-    <p>Các ảnh được chụp trực tiếp từ trình duyệt ở <code>http://127.0.0.1:5000</code> ngày 22/10/2026. Đây là server local đang dùng SQLite và dữ liệu mẫu hiện có; không phải ảnh chụp từ Docker Compose, PostgreSQL, Nginx HTTPS, Grafana hoặc Loki. Thông tin khách hàng trong ảnh đã được làm mờ.</p>
-    <div class="evidence-grid">
-      <figure class="evidence-figure">
-        <img src="./evidence/01-website-local.png" alt="Ảnh chụp trang tổng quan website local">
-        <figcaption>Hình A.1 — Dashboard ứng dụng local; server trả HTTP 200.</figcaption>
-      </figure>
-      <figure class="evidence-figure">
-        <img src="./evidence/02-customers-local.png" alt="Ảnh chụp trang khách hàng, dữ liệu đã làm mờ">
-        <figcaption>Hình A.2 — Trang khách hàng; thông tin liên hệ đã làm mờ.</figcaption>
-      </figure>
-      <figure class="evidence-figure">
-        <img src="./evidence/03-products-local.png" alt="Ảnh chụp trang sản phẩm website local">
-        <figcaption>Hình A.3 — Danh sách sản phẩm và tồn kho trên server local.</figcaption>
-      </figure>
-      <figure class="evidence-figure">
-        <img src="./evidence/04-reports-local.png" alt="Ảnh chụp trang báo cáo website local">
-        <figcaption>Hình A.4 — Trang báo cáo; database demo hiện chưa có hóa đơn.</figcaption>
-      </figure>
-    </div>
-    <div class="runtime-note"><strong>Phân biệt minh chứng:</strong> ảnh local trong phụ lục này chạy SQLite. Kết quả Docker Compose được ghi riêng trong Phụ lục B; không dùng ảnh giao diện local để chứng minh HTTPS/PostgreSQL.</div>
+    <div class="eyebrow">Phụ lục A · Hình A.1</div><div class="rule"></div>
+    <h2>Giao diện tổng quan local</h2>
+    <p>Ảnh local SQLite, chụp ngày 22/10/2026; không dùng làm bằng chứng runtime Docker/PostgreSQL.</p>
+    <figure class="evidence-large"><img src="./evidence/01-website-local.png" alt="Dashboard ứng dụng Billing local"><figcaption>Dashboard ứng dụng Billing local; server trả HTTP 200.</figcaption></figure>
     <span class="page-no">13</span>
   </section>
   <section class="sheet">
-    <div class="eyebrow">Phụ lục B</div><div class="rule"></div>
-    <h2>Minh chứng Docker Compose runtime</h2>
-    <p>Ảnh chụp Prometheus Status → Targets ngày 23/10/2026; cả năm scrape pools đều UP.</p>
-    <figure class="evidence-figure runtime-shot">
-      <img src="./evidence/05-prometheus-targets.png" alt="Prometheus Targets với năm scrape pools đều UP">
-      <figcaption>Hình B.1 — Prometheus Targets runtime; ảnh chụp từ stack Docker Compose, không phải ảnh cấu hình tĩnh.</figcaption>
-    </figure>
-    <p class="small muted">Các kết quả HTTPS, pgAdmin, Grafana và Loki được minh họa bổ sung ở Phụ lục C–D.</p>
+    <div class="eyebrow">Phụ lục A · Hình A.2</div><div class="rule"></div>
+    <h2>Quản lý khách hàng local</h2>
+    <p>Ảnh local SQLite; thông tin liên hệ đã được làm mờ.</p>
+    <figure class="evidence-large"><img src="./evidence/02-customers-local.png" alt="Danh sách khách hàng ứng dụng Billing local"><figcaption>Trang khách hàng của bản local dùng SQLite; ảnh Docker/pgAdmin được trình bày ở Phụ lục G.</figcaption></figure>
     <span class="page-no">14</span>
   </section>
   <section class="sheet">
-    <div class="eyebrow">Phụ lục C</div><div class="rule"></div>
-    <h2>Website HTTPS và công cụ quản trị DB</h2>
-    <p>Ảnh chụp từ Docker Compose ngày 23/10/2026. Website được truy cập qua Nginx HTTPS; pgAdmin kết nối PostgreSQL và mở database <code>billing</code>, schema <code>public</code>.</p>
-    <div class="two-shot">
-      <figure class="evidence-figure">
-        <img src="./evidence/06-website-https.png" alt="Website Billing chạy qua Nginx HTTPS với dữ liệu PostgreSQL">
-        <figcaption>Hình C.1 — Website qua <code>https://localhost:8443</code>; health endpoint và security headers đã kiểm tra bằng curl.</figcaption>
-      </figure>
-      <figure class="evidence-figure">
-        <img src="./evidence/08-pgadmin-schema.png" alt="pgAdmin kết nối Billing PostgreSQL và hiển thị các bảng">
-        <figcaption>Hình C.2 — pgAdmin kết nối Billing PostgreSQL; năm bảng customers, products, invoices, invoice_items và payments.</figcaption>
-      </figure>
-    </div>
+    <div class="eyebrow">Phụ lục A · Hình A.3</div><div class="rule"></div>
+    <h2>Quản lý sản phẩm local</h2>
+    <p>Ảnh local SQLite, minh họa danh sách sản phẩm và tồn kho.</p>
+    <figure class="evidence-large"><img src="./evidence/03-products-local.png" alt="Danh sách sản phẩm và tồn kho trong bản local"><figcaption>Danh sách sản phẩm và tồn kho trên server local.</figcaption></figure>
     <span class="page-no">15</span>
   </section>
   <section class="sheet">
-    <div class="eyebrow">Phụ lục D</div><div class="rule"></div>
-    <h2>Monitoring và log tập trung</h2>
-    <p>Ảnh chụp runtime từ Grafana và Prometheus; LogQL lọc các request health thành công trong 15 phút gần nhất.</p>
-    <div class="evidence-grid">
-      <figure class="evidence-figure">
-        <img src="./evidence/05-prometheus-targets.png" alt="Năm Prometheus targets đều UP">
-        <figcaption>Hình D.1 — Năm scrape targets đều UP.</figcaption>
-      </figure>
-      <figure class="evidence-figure">
-        <img src="./evidence/07-grafana-dashboard.png" alt="Grafana Billing dashboard với các biểu đồ metrics">
-        <figcaption>Hình D.2 — Dashboard gồm web, container, PostgreSQL và Nginx metrics.</figcaption>
-      </figure>
-      <figure class="evidence-figure">
-        <img src="./evidence/11-grafana-database-container.png" alt="Các panel CPU container, PostgreSQL availability và Nginx active connections">
-        <figcaption>Hình D.3 — Chi tiết panel CPU, PostgreSQL availability = 1 và Nginx active connections.</figcaption>
-      </figure>
-      <figure class="evidence-figure">
-        <img src="./evidence/09-loki-explore.png" alt="Grafana Explore chạy truy vấn LogQL và hiển thị logs">
-        <figcaption>Hình D.4 — LogQL <code>{compose_service="billing"} |= "GET /health"</code> trả về log thật.</figcaption>
-      </figure>
-    </div>
+    <div class="eyebrow">Phụ lục A · Hình A.4</div><div class="rule"></div>
+    <h2>Báo cáo hóa đơn local</h2>
+    <p>Ảnh local SQLite; database mẫu chưa có hóa đơn khi chụp.</p>
+    <figure class="evidence-large"><img src="./evidence/04-reports-local.png" alt="Trang báo cáo trong bản local"><figcaption>Trang báo cáo ứng dụng local; ảnh được phân biệt với hệ thống Docker Compose.</figcaption></figure>
     <span class="page-no">16</span>
   </section>
   <section class="sheet">
-    <div class="eyebrow">Phụ lục E</div><div class="rule"></div>
-    <h2>Truy vấn LogQL bổ sung</h2>
-    <p>Hai truy vấn dưới đây được chạy trên Grafana Explore/Loki. Dữ liệu lấy trực tiếp từ log Docker của Nginx và PostgreSQL.</p>
-    <div class="query-evidence-list">
-      <figure class="evidence-figure">
-        <img src="./evidence/12-logql-nginx.png" alt="Grafana Explore truy vấn log GET của Nginx">
-        <figcaption>Hình E.1 — <code>{compose_service="nginx"} |= "GET"</code>. Loki trả về 5 log Nginx; truy vấn gồm request health HTTP 200.</figcaption>
-        <pre>172.25.0.1 - - [22/Oct/2026:18:10:25 +0000] "GET /health HTTP/1.1" 200 32</pre>
-      </figure>
-      <figure class="evidence-figure">
-        <img src="./evidence/13-logql-database-errors.png" alt="Grafana Explore tìm ERROR hoặc FATAL trong log PostgreSQL">
-        <figcaption>Hình E.2 — <code>{compose_service="db"} |~ "(?i)error|fatal"</code>. Có một dòng FATAL lịch sử trong lần restart để sửa cấu hình; PostgreSQL hiện healthy.</figcaption>
-        <pre>2026-10-22 17:25:53 UTC [157] FATAL: terminating connection due to administrator command</pre>
-      </figure>
-    </div>
+    <div class="eyebrow">Phụ lục B · Hình B.1</div><div class="rule"></div>
+    <h2>Prometheus scrape targets</h2>
+    <p>Ảnh runtime ngày 23/10/2026; cả năm scrape pools đều UP.</p>
+    <figure class="evidence-large"><img src="./evidence/05-prometheus-targets.png" alt="Năm Prometheus targets đều UP"><figcaption>Targets: billing-web, containers, nginx, postgres và prometheus. Ảnh chụp từ stack Docker Compose.</figcaption></figure>
     <span class="page-no">17</span>
+  </section>
+  <section class="sheet">
+    <div class="eyebrow">Phụ lục C · Hình C.1</div><div class="rule"></div>
+    <h2>Website qua HTTPS</h2>
+    <p>Website được phục vụ qua reverse proxy Nginx với PostgreSQL phía sau.</p>
+    <figure class="evidence-large"><img src="./evidence/06-website-https.png" alt="Website Billing qua Nginx HTTPS"><figcaption><code>https://localhost:8443</code>; health trả HTTP 200. Security headers được xác nhận bằng curl.</figcaption></figure>
+    <span class="page-no">18</span>
+  </section>
+  <section class="sheet">
+    <div class="eyebrow">Phụ lục D · Hình D.1</div><div class="rule"></div>
+    <h2>pgAdmin và schema PostgreSQL</h2>
+    <p>pgAdmin đã kết nối server Billing PostgreSQL, database <code>billing</code>, schema <code>public</code>.</p>
+    <figure class="evidence-large"><img src="./evidence/08-pgadmin-schema.png" alt="pgAdmin hiển thị database billing và các bảng"><figcaption>Object Explorer xác nhận năm bảng: customers, invoice_items, invoices, payments và products.</figcaption></figure>
+    <span class="page-no">19</span>
+  </section>
+  <section class="sheet">
+    <div class="eyebrow">Phụ lục E · Hình E.1</div><div class="rule"></div>
+    <h2>Grafana dashboard · web metrics</h2>
+    <p>Dashboard Billing System Overview hiển thị request rate và p95 latency trên dữ liệu runtime.</p>
+    <figure class="evidence-large"><img src="./evidence/07-grafana-dashboard.png" alt="Grafana web request rate, latency, memory and CPU panels"><figcaption>Dashboard được provision tự động; các đường biểu diễn lấy từ Prometheus.</figcaption></figure>
+    <span class="page-no">20</span>
+  </section>
+  <section class="sheet">
+    <div class="eyebrow">Phụ lục E · Hình E.2</div><div class="rule"></div>
+    <h2>Grafana dashboard · DB và container</h2>
+    <p>Chi tiết panel CPU container, trạng thái exporter PostgreSQL và kết nối Nginx.</p>
+    <figure class="evidence-large"><img src="./evidence/11-grafana-database-container.png" alt="Grafana panels for container CPU, PostgreSQL and Nginx"><figcaption>Giá trị chụp: PostgreSQL availability = 1; Nginx active connections = 1.</figcaption></figure>
+    <span class="page-no">21</span>
+  </section>
+  <section class="sheet">
+    <div class="eyebrow">Phụ lục F · Hình F.1</div><div class="rule"></div>
+    <h2>LogQL · request ứng dụng</h2>
+    <p>Truy vấn lọc health-check request trong Grafana Explore.</p>
+    <figure class="evidence-large"><img src="./evidence/09-loki-explore.png" alt="Grafana Explore truy vấn log health của billing"><figcaption><code>{compose_service="billing"} |= "GET /health"</code>; query_range trả về log thật từ Promtail/Loki.</figcaption></figure>
+    <span class="page-no">22</span>
+  </section>
+  <section class="sheet">
+    <div class="eyebrow">Phụ lục F · Hình F.2</div><div class="rule"></div>
+    <h2>LogQL · request Nginx</h2>
+    <p>Truy vấn theo service label, lọc access log Nginx có method GET.</p>
+    <figure class="evidence-large"><img src="./evidence/12-logql-nginx.png" alt="Grafana Explore truy vấn GET logs từ Nginx"><figcaption><code>{compose_service="nginx"} |= "GET"</code>; Loki trả 5 entries, gồm request health HTTP 200.</figcaption></figure>
+    <div class="evidence-output">172.25.0.1 - - [22/Oct/2026:18:10:25 +0000] "GET /health HTTP/1.1" 200 32</div>
+    <span class="page-no">23</span>
+  </section>
+  <section class="sheet">
+    <div class="eyebrow">Phụ lục F · Hình F.3</div><div class="rule"></div>
+    <h2>LogQL · PostgreSQL errors</h2>
+    <p>Regex không phân biệt hoa/thường để tìm ERROR/FATAL trong log database.</p>
+    <figure class="evidence-large"><img src="./evidence/13-logql-database-errors.png" alt="Grafana Explore tìm ERROR và FATAL trong log PostgreSQL"><figcaption><code>{compose_service="db"} |~ "(?i)error|fatal"</code>; Loki trả một dòng FATAL lịch sử lúc restart để sửa cấu hình. PostgreSQL hiện healthy.</figcaption></figure>
+    <div class="evidence-output">2026-10-22 17:25:53 UTC [157] FATAL: terminating connection due to administrator command</div>
+    <span class="page-no">24</span>
   </section>
 </body>
 </html>

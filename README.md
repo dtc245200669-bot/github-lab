@@ -119,7 +119,7 @@ infra/grafana/                Provision datasource và dashboard
 infra/loki/                   Lưu trữ log tập trung
 infra/promtail/               Thu thập Docker logs, giới hạn service allowlist
 scripts/                      Sinh .env an toàn
-BAO-CAO.html                  Báo cáo A4 17 trang, gồm ảnh giao diện local và runtime
+BAO-CAO.html                  Báo cáo A4 24 trang, gồm ảnh minh chứng lớn theo từng trang
 evidence/                     Ảnh chụp thật; ảnh khách hàng đã làm mờ thông tin
 ```
 
@@ -133,4 +133,4 @@ c3c2da0 feat: add Prometheus and Grafana monitoring
 f909bbc feat: add Loki logging and deployment report
 ```
 
-Tài liệu [`BAO-CAO.html`](./BAO-CAO.html) có 17 trang A4 và phân biệt ảnh local SQLite với ảnh runtime Docker Compose. Minh chứng runtime gồm website HTTPS (`evidence/06-website-https.png`), hai ảnh Grafana dashboard (`evidence/07-grafana-dashboard.png`, `evidence/11-grafana-database-container.png`), pgAdmin schema (`evidence/08-pgadmin-schema.png`), Loki Explore (`evidence/09-loki-explore.png`) và Prometheus Targets (`evidence/05-prometheus-targets.png`). Hai ảnh truy vấn LogQL bổ sung nằm ở `evidence/12-logql-nginx.png` và `evidence/13-logql-database-errors.png`. Stack đã được build; HTTPS health trả HTTP 200, cả năm targets UP, pgAdmin kết nối PostgreSQL và Loki trả log qua LogQL. Trước khi nộp, bổ sung thông tin cá nhân còn trống trên bìa/trang ký và chạy lại lệnh demo trên máy trình bày.
+Tài liệu [`BAO-CAO.html`](./BAO-CAO.html) có 24 trang A4; mỗi ảnh minh chứng được trình bày lớn trên trang riêng và phân biệt ảnh local SQLite với ảnh runtime Docker Compose. Minh chứng runtime gồm website HTTPS (`evidence/06-website-https.png`), Grafana dashboard (`evidence/07-grafana-dashboard.png`, `evidence/11-grafana-database-container.png`), pgAdmin schema (`evidence/08-pgadmin-schema.png`), Loki Explore (`evidence/09-loki-explore.png`), Prometheus Targets (`evidence/05-prometheus-targets.png`) và các truy vấn LogQL (`evidence/12-logql-nginx.png`, `evidence/13-logql-database-errors.png`). Stack đã được build; HTTPS health trả HTTP 200, cả năm targets UP, pgAdmin kết nối PostgreSQL và Loki trả log qua LogQL. Trước khi nộp, bổ sung thông tin cá nhân còn trống trên bìa/trang ký và chạy lại lệnh demo trên máy trình bày.
