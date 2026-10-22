@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7fb">
+  <meta name="description" content="Bảng điều khiển quản lý khách hàng, sản phẩm, hóa đơn và thanh toán.">
+  <title>Billing — Quản lý hóa đơn</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" aria-label="Điều hướng chính">
+      <a class="brand" href="#" aria-label="Billing — Trang tổng quan" onclick="showPage('dashboard'); return false">
+        <span class="brand-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M5 4.75h14A1.25 1.25 0 0 1 20.25 6v12A1.25 1.25 0 0 1 19 19.25H5A1.25 1.25 0 0 1 3.75 18V6A1.25 1.25 0 0 1 5 4.75Z" stroke="currentColor" stroke-width="1.7"/><path d="M8 8h8M8 12h3m2 0h3m-8 4h8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        </span>
+        <span class="brand-copy"><b>Billing</b><small>QUẢN LÝ TÀI CHÍNH</small></span>
+      </a>
+
+      <div class="nav-label">KHÔNG GIAN LÀM VIỆC</div>
+      <nav>
+        <button class="nav active" data-page="dashboard" aria-current="page">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="4" rx="1.5"/><rect x="13.5" y="10.5" width="7" height="10" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/></svg>
+          <span>Tổng quan</span>
+        </button>
+        <button class="nav" data-page="customers">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 20v-1.5a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4V20"/><circle cx="9.5" cy="7.5" r="4"/><path d="M17 4a4 4 0 0 1 0 7.75M21 20v-1.5a4 4 0 0 0-3-3.87"/></svg>
+          <span>Khách hàng</span>
+        </button>
+        <button class="nav" data-page="products">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 8.5 4.5v9L12 21l-8.5-4.5v-9L12 3Z"/><path d="m3.8 7.7 8.2 4.5 8.2-4.5M12 12.2V21m-4-16.9 8.5 4.6"/></svg>
+          <span>Sản phẩm</span>
+        </button>
+        <button class="nav" data-page="invoices">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.75h9l4 4V20a.25.25 0 0 1-.25.25H6A1.25 1.25 0 0 1 4.75 19V5A1.25 1.25 0 0 1 6 3.75Z"/><path d="M14.5 4v4.5H19M8 12h8m-8 4h8"/></svg>
+          <span>Hóa đơn</span>
+        </button>
+        <button class="nav" data-page="reports">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19.25h16M6.75 16V10m5.25 6V5m5.25 11v-8"/></svg>
+          <span>Báo cáo</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-foot">
+        <span class="workspace-mark" aria-hidden="true">L</span>
+        <span><b>Không gian cục bộ</b><small>Dữ liệu được lưu trên máy này</small></span>
+        <span class="workspace-dot" aria-hidden="true"></span>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="topbar-title">
+          <div class="eyebrow"><span>WORKSPACE</span><span class="crumb-divider">/</span><span>BILLING</span></div>
+          <h1 id="page-title">Tổng quan</h1>
+        </div>
+        <div class="top-right"><span class="status-dot"></span><span>Hệ thống đang hoạt động</span></div>
+      </header>
+
+      <div id="alert" class="alert hidden" role="status" aria-live="polite"></div>
+
+      <section id="dashboard" class="page" aria-label="Tổng quan">
+        <div class="welcome">
+          <div class="welcome-copy">
+            <div class="eyebrow light"><span class="welcome-spark">✦</span> BẢNG ĐIỀU KHIỂN</div>
+            <h2>Quản lý kinh doanh,<br class="desktop-break"> thật đơn giản.</h2>
+            <p>Theo dõi khách hàng, sản phẩm và dòng tiền — tất cả trong một nơi.</p>
+          </div>
+          <div class="welcome-art" aria-hidden="true">
+            <span class="art-orbit orbit-one"></span><span class="art-orbit orbit-two"></span><span class="art-symbol">₫</span>
+          </div>
+          <span class="welcome-caption">BILLING OVERVIEW <span>•</span> 01</span>
+        </div>
+
+        <div class="stats">
+          <article class="stat">
+            <div class="stat-top"><span>Khách hàng</span><span class="stat-icon purple" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M16 20v-1.5a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4V20"/><circle cx="9.5" cy="7.5" r="4"/><path d="M17 4a4 4 0 0 1 0 7.75"/></svg></span></div>
+            <strong id="stat-customers">0</strong><small>Tổng khách hàng</small>
+          </article>
+          <article class="stat">
+            <div class="stat-top"><span>Sản phẩm</span><span class="stat-icon blue" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 3 8.5 4.5v9L12 21l-8.5-4.5v-9L12 3Z"/><path d="m3.8 7.7 8.2 4.5 8.2-4.5M12 12.2V21"/></svg></span></div>
+            <strong id="stat-products">0</strong><small>Tổng sản phẩm</small>
+          </article>
+          <article class="stat">
+            <div class="stat-top"><span>Tổng hóa đơn</span><span class="stat-icon orange" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3.75h9l4 4V20a.25.25 0 0 1-.25.25H6A1.25 1.25 0 0 1 4.75 19V5A1.25 1.25 0 0 1 6 3.75Z"/><path d="M14.5 4v4.5H19M8 12h8m-8 4h5"/></svg></span></div>
+            <strong id="stat-invoices">0</strong><small>Hóa đơn đã tạo</small>
+          </article>
+          <article class="stat">
+            <div class="stat-top"><span>Đã thu</span><span class="stat-icon green" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3v18m4-14.5c-.8-1-2.1-1.5-4-1.5-2.2 0-4 1.2-4 3s1.8 3 4 3 4 1.2 4 3-1.8 3-4 3c-1.9 0-3.2-.5-4-1.5"/></svg></span></div>
+            <strong id="stat-revenue">0 ₫</strong><small>Tổng tiền đã thanh toán</small>
+          </article>
+        </div>
+
+        <div class="section-heading">
+          <div><h3>Hóa đơn gần đây</h3><p>Theo dõi những giao dịch mới nhất</p></div>
+          <button class="primary" onclick="newInvoice()"><span aria-hidden="true">＋</span> Tạo hóa đơn</button>
+        </div>
+        <div class="table-wrap"><table><thead><tr><th>Mã hóa đơn</th><th>Khách hàng</th><th>Ngày lập</th><th>Tổng tiền</th><th>Trạng thái</th><th></th></tr></thead><tbody id="recent-invoices"></tbody></table></div>
+        <div class="debt-banner">
+          <span class="debt-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 2.8 19h18.4L12 3Z"/><path d="M12 9v4m0 3h.01"/></svg></span>
+          <div><b>Công nợ chưa thanh toán</b><p>Tổng số tiền còn phải thu từ khách hàng</p></div>
+          <strong id="stat-outstanding">0 ₫</strong>
+        </div>
+      </section>
+
+      <section id="customers" class="page hidden" aria-label="Khách hàng">
+        <div class="section-heading"><div><h3>Danh sách khách hàng</h3><p>Quản lý thông tin và liên hệ khách hàng</p></div><button class="primary" onclick="openCustomerForm()"><span aria-hidden="true">＋</span> Thêm khách hàng</button></div>
+        <div class="toolbar"><label class="search-box"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.5 4.5"/></svg><input id="customer-search" aria-label="Tìm khách hàng" placeholder="Tìm theo tên, số điện thoại, email..." oninput="loadCustomers()"></label></div>
+        <div class="table-wrap"><table><thead><tr><th>Khách hàng</th><th>Số điện thoại</th><th>Email</th><th>Địa chỉ</th><th>Ngày tạo</th><th>Thao tác</th></tr></thead><tbody id="customers-body"></tbody></table></div>
+      </section>
+
+      <section id="products" class="page hidden" aria-label="Sản phẩm">
+        <div class="section-heading"><div><h3>Danh sách sản phẩm</h3><p>Quản lý giá bán và tình trạng tồn kho</p></div><button class="primary" onclick="openProductForm()"><span aria-hidden="true">＋</span> Thêm sản phẩm</button></div>
+        <div class="toolbar"><label class="search-box"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.5 4.5"/></svg><input id="product-search" aria-label="Tìm sản phẩm" placeholder="Tìm theo tên hoặc mã sản phẩm..." oninput="loadProducts()"></label></div>
+        <div class="table-wrap"><table><thead><tr><th>Mã SP</th><th>Tên sản phẩm</th><th>Đơn giá</th><th>Tồn kho</th><th>Thao tác</th></tr></thead><tbody id="products-body"></tbody></table></div>
+      </section>
+
+      <section id="invoices" class="page hidden" aria-label="Hóa đơn">
+        <div class="section-heading"><div><h3>Quản lý hóa đơn</h3><p>Lập hóa đơn và theo dõi tình hình thanh toán</p></div><button class="primary" onclick="newInvoice()"><span aria-hidden="true">＋</span> Tạo hóa đơn</button></div>
+        <div class="toolbar"><label class="search-box"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.5 4.5"/></svg><input id="invoice-search" aria-label="Tìm hóa đơn" placeholder="Tìm mã hóa đơn hoặc tên khách hàng..." oninput="loadInvoices()"></label></div>
+        <div class="table-wrap"><table><thead><tr><th>Mã hóa đơn</th><th>Khách hàng</th><th>Ngày lập</th><th>Tổng tiền</th><th>Đã thu</th><th>Còn nợ</th><th>Trạng thái</th><th>Thao tác</th></tr></thead><tbody id="invoices-body"></tbody></table></div>
+      </section>
+
+      <section id="reports" class="page hidden" aria-label="Báo cáo">
+        <div class="section-heading"><div><h3>Báo cáo</h3><p>Tổng hợp hóa đơn theo tháng và trạng thái</p></div><button class="secondary" onclick="loadReports()"><span aria-hidden="true">↻</span> Làm mới</button></div>
+        <div class="report-grid">
+          <div class="panel"><h3>Hóa đơn theo tháng</h3><div class="table-wrap"><table><thead><tr><th>Tháng</th><th>Số hóa đơn</th><th>Tổng giá trị</th></tr></thead><tbody id="monthly-body"></tbody></table></div></div>
+          <div class="panel"><h3>Trạng thái hóa đơn</h3><div id="status-report"></div></div>
+        </div>
+      </section>
+      <footer class="page-footer"><span>Billing Management System</span><span>Quản lý rõ ràng. Vận hành hiệu quả.</span></footer>
+    </main>
+  </div>
+
+  <div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title" onclick="if(event.target===this)closeModal()">
+    <div class="modal-card"><div class="modal-head"><div><span class="modal-kicker">BILLING WORKSPACE</span><h2 id="modal-title">Thông tin</h2></div><button class="icon-btn" onclick="closeModal()" aria-label="Đóng cửa sổ">✕</button></div><div id="modal-body"></div></div>
+  </div>
+  <script src="/app.js"></script>
+</body>
+</html>
