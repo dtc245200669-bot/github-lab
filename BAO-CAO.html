@@ -66,6 +66,8 @@
     .cover-visual{width:118mm;margin:8pt auto 0}
     .cover-visual img{display:block;width:100%;height:32mm;object-fit:cover;object-position:center 20%;border:1px solid var(--line);background:#f2f5f9}
     .runtime-shot img{height:200mm}
+    .query-evidence-list{display:grid;grid-template-columns:1fr;gap:8pt;margin-top:8pt}
+    .query-evidence-list img{height:82mm}
     .two-shot{display:grid;grid-template-columns:1fr 1fr;gap:9pt}
     .two-shot .placeholder{min-height:42mm}
     .page-no{position:absolute;right:20mm;bottom:9mm;color:#8290a2;font-size:8pt}
@@ -498,6 +500,22 @@ docker compose down</pre>
       </figure>
     </div>
     <span class="page-no">16</span>
+  </section>
+  <section class="sheet">
+    <div class="eyebrow">Phụ lục E</div><div class="rule"></div>
+    <h2>Truy vấn LogQL bổ sung</h2>
+    <p>Hai truy vấn dưới đây được chạy trên Grafana Explore/Loki. Dữ liệu lấy trực tiếp từ log Docker của Nginx và PostgreSQL.</p>
+    <div class="query-evidence-list">
+      <figure class="evidence-figure">
+        <img src="./evidence/12-logql-nginx.png" alt="Grafana Explore truy vấn log GET của Nginx">
+        <figcaption>Hình E.1 — <code>{compose_service="nginx"} |= "GET"</code>. Loki trả về 5 log Nginx; truy vấn gồm request health HTTP 200.</figcaption>
+      </figure>
+      <figure class="evidence-figure">
+        <img src="./evidence/13-logql-database-errors.png" alt="Grafana Explore tìm ERROR hoặc FATAL trong log PostgreSQL">
+        <figcaption>Hình E.2 — <code>{compose_service="db"} |~ "(?i)error|fatal"</code>. Có một dòng FATAL lịch sử trong lần restart để sửa cấu hình; PostgreSQL hiện healthy.</figcaption>
+      </figure>
+    </div>
+    <span class="page-no">17</span>
   </section>
 </body>
 </html>
