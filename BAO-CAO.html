@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Báo cáo triển khai Billing Management System</title>
+  <style>
+    :root{--navy:#14243b;--blue:#315f9a;--teal:#168b87;--ink:#263449;--muted:#66758a;--line:#dce4ed;--paper:#fff;--bg:#e9eef4}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--ink);font:10.5pt/1.55 "Segoe UI",Arial,sans-serif}
+    .sheet{position:relative;width:210mm;min-height:297mm;margin:12mm auto;padding:19mm 20mm 18mm;background:var(--paper);box-shadow:0 3px 18px #15263b1c;break-after:page;page-break-after:always}
+    .sheet:last-child{break-after:auto;page-break-after:auto}
+    h1,h2,h3{color:var(--navy);line-height:1.25}
+    h1{font-size:25pt;margin:0 0 12pt}
+    h2{font-size:19pt;margin:0 0 13pt}
+    h3{font-size:12pt;margin:15pt 0 5pt}
+    p{margin:0 0 9pt;text-align:justify}
+    ul,ol{margin:5pt 0 10pt;padding-left:21pt}
+    li{margin:3pt 0}
+    .eyebrow{color:var(--teal);font-size:8pt;font-weight:700;letter-spacing:1.5pt;text-transform:uppercase}
+    .rule{width:48mm;height:3px;margin:12pt 0 19pt;background:linear-gradient(90deg,var(--teal),#b0d9d3)}
+    .muted{color:var(--muted)}
+    .small{font-size:8.5pt}
+    .cover{display:flex;flex-direction:column;justify-content:space-between;text-align:center;border:7px double var(--navy)}
+    .cover-top{margin-top:3mm;font-size:12pt;font-weight:700;line-height:1.8;text-transform:uppercase}
+    .cover-title{margin:auto 0}
+    .cover-title .eyebrow{margin-bottom:17pt}
+    .cover-title h1{font-size:27pt;letter-spacing:.4pt;text-transform:uppercase}
+    .cover-title h2{margin:8pt auto;color:var(--teal);font-size:17pt;font-weight:600}
+    .cover-table{width:100%;max-width:125mm;margin:20pt auto 0;text-align:left;border-collapse:collapse}
+    .cover-table td{padding:5pt 7pt;border-bottom:1px solid var(--line)}
+    .cover-table td:first-child{width:42%;color:var(--muted)}
+    .cover-footer{font-weight:650;letter-spacing:.5pt}
+    .callout{margin:10pt 0;padding:10pt 12pt;border-left:3px solid var(--teal);background:#f1f8f7}
+    .callout strong{color:var(--navy)}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:9pt}
+    .card{padding:10pt 11pt;border:1px solid var(--line);border-radius:7px;background:#fbfcfe}
+    .card h3{margin:0 0 5pt}
+    .card p{margin:0;text-align:left;font-size:9.5pt}
+    table{width:100%;border-collapse:collapse;margin:8pt 0 12pt;font-size:9pt}
+    th{background:var(--navy);color:#fff;text-align:left;font-weight:650}
+    th,td{padding:6pt 7pt;border:1px solid var(--line);vertical-align:top}
+    tr:nth-child(even) td{background:#f8fafc}
+    code,pre{font-family:Consolas,"Courier New",monospace}
+    code{padding:1px 3px;border-radius:3px;background:#f0f3f7;font-size:8.5pt}
+    pre{overflow-wrap:anywhere;white-space:pre-wrap;padding:9pt 11pt;border-radius:6px;background:#17253a;color:#e5edf7;font-size:8.2pt;line-height:1.5}
+    .diagram{padding:8pt;border:1px solid var(--line);border-radius:7px;background:#fbfcfe}
+    .diagram svg{display:block;width:100%;height:auto}
+    .placeholder{display:grid;min-height:48mm;place-items:center;margin:7pt 0;padding:12pt;border:1.5px dashed #91a2b8;border-radius:7px;background:#f8fafc;color:#6e7d91;text-align:center}
+    .placeholder strong{display:block;margin-bottom:4pt;color:var(--navy)}
+    .two-shot{display:grid;grid-template-columns:1fr 1fr;gap:9pt}
+    .two-shot .placeholder{min-height:42mm}
+    .page-no{position:absolute;right:20mm;bottom:9mm;color:#8290a2;font-size:8pt}
+    .footnote{position:absolute;left:20mm;bottom:9mm;color:#8290a2;font-size:8pt}
+    .signatures{display:grid;grid-template-columns:1fr 1fr;gap:25mm;margin-top:25mm;text-align:center}
+    .signatures div{padding-top:45pt;border-top:1px solid var(--line)}
+    @page{size:A4;margin:0}
+    @media print{
+      body{background:#fff}
+      .sheet{width:210mm;height:297mm;min-height:297mm;margin:0;padding:19mm 20mm 18mm;box-shadow:none;overflow:hidden}
+    }
+    @media screen and (max-width:850px){
+      .sheet{width:100%;min-height:0;margin:10px auto;padding:28px 24px 48px}
+      .grid,.two-shot{grid-template-columns:1fr}
+      .page-no,.footnote{bottom:14px}
+    }
+  </style>
+</head>
+<body>
+  <section class="sheet cover">
+    <div class="cover-top">
+      <div>[TÊN TRƯỜNG ĐẠI HỌC / CAO ĐẲNG]</div>
+      <div>[KHOA / BỘ MÔN]</div>
+      <div class="rule" style="margin:12pt auto"></div>
+      <div style="font-size:10pt;color:#66758a">BÁO CÁO HỌC PHẦN: TRIỂN KHAI VÀ QUẢN TRỊ HỆ THỐNG PHẦN MỀM</div>
+    </div>
+    <div class="cover-title">
+      <div class="eyebrow">ĐỒ ÁN TRIỂN KHAI HỆ THỐNG</div>
+      <h1>Billing Management System</h1>
+      <h2>Ứng dụng quản lý hóa đơn trên Docker Compose</h2>
+      <p class="muted" style="text-align:center">PostgreSQL · Nginx · Prometheus · Grafana · Loki</p>
+      <table class="cover-table">
+        <tr><td>Sinh viên thực hiện</td><td>[HỌ VÀ TÊN]</td></tr>
+        <tr><td>Mã số sinh viên</td><td>[MÃ SỐ SINH VIÊN]</td></tr>
+        <tr><td>Lớp / khóa</td><td>[LỚP / KHÓA]</td></tr>
+        <tr><td>Giảng viên hướng dẫn</td><td>[HỌ TÊN GIẢNG VIÊN]</td></tr>
+      </table>
+    </div>
+    <div class="cover-footer">[TỈNH / THÀNH PHỐ] — 2026</div>
+    <span class="page-no">01</span>
+  </section>
+
+  <section class="sheet">
+    <div class="eyebrow">Tóm tắt</div><div class="rule"></div>
+    <h2>Tóm tắt đề tài</h2>
+    <p>Báo cáo trình bày quá trình đóng gói, triển khai và quan sát một hệ thống quản lý hóa đơn trên Docker Compose. Hệ thống ban đầu là ứng dụng Flask với giao diện HTML/CSS/JavaScript và cơ sở dữ liệu SQLite. Phiên bản triển khai được chuẩn hóa theo mô hình nhiều dịch vụ: Flask/Gunicorn xử lý nghiệp vụ; PostgreSQL lưu dữ liệu; pgAdmin cung cấp giao diện quản trị cơ sở dữ liệu; Nginx làm reverse proxy HTTPS; Prometheus thu thập metrics; Grafana trực quan hóa; Loki lưu log; Promtail thu thập Docker logs.</p>
+    <p>Mục tiêu chính là thực hành đầy đủ quy trình vận hành phần mềm: tổ chức mã nguồn và cấu hình, mô hình hóa mạng container, lưu trữ bền vững, reverse proxy, quan sát metrics/log, và giảm quyền thực thi. Tệp Compose mô tả toàn bộ stack để có thể kiểm tra cấu hình và tái tạo môi trường từ một lệnh. Các mật khẩu không nằm trong mã nguồn mà được tạo cục bộ vào tệp môi trường bị Git loại trừ.</p>
+    <div class="callout"><strong>Phạm vi học tập.</strong> Chứng chỉ TLS tự ký và cấu hình mặc định phục vụ demo trên máy cá nhân. Không sử dụng nguyên trạng để cung cấp dịch vụ Internet hoặc dữ liệu nhạy cảm.</div>
+    <h3>Từ khóa</h3>
+    <p>Docker Compose; Flask; PostgreSQL; pgAdmin; Nginx; HTTPS; Prometheus; Grafana; Loki; Promtail; hardening; observability.</p>
+    <h3>Mục lục nội dung</h3>
+    <ol>
+      <li>Giới thiệu, mục tiêu và yêu cầu.</li><li>Kiến trúc và luồng hoạt động.</li>
+      <li>Ứng dụng, PostgreSQL và pgAdmin.</li><li>Nginx reverse proxy và HTTPS.</li>
+      <li>Giám sát Prometheus và Grafana.</li><li>Log tập trung Loki/Promtail.</li>
+      <li>Hardening và phân tích rủi ro.</li><li>Triển khai, kiểm thử và minh chứng.</li>
+      <li>Vận hành, sao lưu và kết luận.</li>
+    </ol>
+    <p class="small muted">Cập nhật tài liệu: 22/10/2026. Điền thông tin cá nhân và thay các khung minh chứng bằng ảnh chụp thật trước khi nộp.</p>
+    <span class="page-no">02</span>
+  </section>
+
+  <section class="sheet">
+    <div class="eyebrow">Chương 1</div><div class="rule"></div>
+    <h2>Giới thiệu và yêu cầu đề tài</h2>
+    <h3>1.1 Bối cảnh</h3>
+    <p>Ứng dụng quản lý hóa đơn cần đồng thời đảm bảo tính sẵn sàng, tính toàn vẹn dữ liệu và khả năng truy vết. Nếu chỉ chạy Flask trực tiếp trên máy cá nhân, cấu hình phụ thuộc môi trường và khó tái tạo. Việc tách các vai trò thành container giúp mô tả quan hệ phụ thuộc, cổng mạng, healthcheck, volume và quyền thực thi một cách tường minh. Công cụ monitoring và logging giúp người vận hành xác định được trạng thái dịch vụ cũng như nguyên nhân lỗi.</p>
+    <h3>1.2 Mục tiêu</h3>
+    <ul>
+      <li>Đóng gói ứng dụng Flask và triển khai bằng Docker Compose.</li>
+      <li>Sử dụng PostgreSQL làm database; cung cấp pgAdmin để quản trị.</li>
+      <li>Đặt Nginx trước ứng dụng, bật HTTPS tự ký và các security headers.</li>
+      <li>Thu thập metrics ứng dụng, Nginx, PostgreSQL và container; tạo dashboard Grafana.</li>
+      <li>Thu thập log Docker qua Promtail, lưu ở Loki và thực hành ít nhất ba truy vấn LogQL.</li>
+      <li>Áp dụng least privilege, network isolation, secrets ngoài Git, read-only filesystem và non-root container phù hợp.</li>
+    </ul>
+    <h3>1.3 Phạm vi chức năng ứng dụng</h3>
+    <p>Website có các trang tổng quan, khách hàng, sản phẩm, hóa đơn và báo cáo. Người dùng có thể tạo/sửa/xóa khách hàng và sản phẩm, lập hóa đơn có kiểm tra tồn kho, ghi nhận thanh toán một phần hoặc toàn bộ, xem lịch sử thanh toán và thống kê công nợ. Flask cung cấp JSON API dưới tiền tố <code>/api</code>; Nginx chuyển tiếp các request HTTPS tới Gunicorn. Endpoint <code>/health</code> kiểm tra kết nối DB; endpoint <code>/metrics</code> xuất counters và histogram cho Prometheus.</p>
+    <h3>1.4 Tiêu chí nghiệm thu</h3>
+    <table><tr><th>Nhóm</th><th>Đầu ra</th><th>Minh chứng cần chụp</th></tr>
+      <tr><td>Triển khai</td><td>Compose khởi chạy toàn bộ dịch vụ</td><td>Docker Desktop/terminal, trạng thái healthy</td></tr>
+      <tr><td>Web + DB</td><td>Website HTTPS và pgAdmin kết nối PostgreSQL</td><td>Trang web, schema/bảng pgAdmin</td></tr>
+      <tr><td>Metrics/logs</td><td>Prometheus targets UP, dashboard và LogQL có kết quả</td><td>Targets, Grafana, Explore</td></tr>
+      <tr><td>Hardening</td><td>Network, header, user và quyền được kiểm tra</td><td>Headers, inspect user/network</td></tr>
+    </table>
+    <span class="page-no">03</span>
+  </section>
+
+  <section class="sheet">
+    <div class="eyebrow">Chương 2</div><div class="rule"></div>
+    <h2>Kiến trúc và luồng hoạt động</h2>
+    <p>Compose tạo ba mạng với mục tiêu khác nhau. Mạng <code>edge</code> dành cho entrypoint Nginx. Mạng <code>data</code> nội bộ nối Nginx, ứng dụng, pgAdmin và PostgreSQL. Mạng <code>observability</code> nội bộ nối exporters, Prometheus, Grafana, Loki, Promtail và các target metrics. Database không publish cổng ra host; các giao diện quản trị chỉ bind loopback.</p>
+    <div class="diagram">
+      <svg viewBox="0 0 760 370" role="img" aria-label="Sơ đồ kiến trúc các container Billing">
+        <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 8 4 0 8Z" fill="#58718f"/></marker></defs>
+        <rect x="16" y="26" width="728" height="62" rx="10" fill="#eef3f9" stroke="#cbd7e5"/><text x="32" y="49" font-size="13" font-weight="700" fill="#315f9a">EDGE / HOST LOCAL</text>
+        <rect x="265" y="41" width="230" height="34" rx="7" fill="#315f9a"/><text x="380" y="63" text-anchor="middle" font-size="13" fill="white">Nginx · HTTPS :8443</text>
+        <rect x="16" y="108" width="728" height="104" rx="10" fill="#f0f8f6" stroke="#b9ded7"/><text x="32" y="131" font-size="13" font-weight="700" fill="#168b87">DATA (INTERNAL)</text>
+        <rect x="78" y="153" width="180" height="40" rx="7" fill="#168b87"/><text x="168" y="178" text-anchor="middle" font-size="12" fill="white">Flask / Gunicorn</text>
+        <rect x="290" y="153" width="180" height="40" rx="7" fill="#168b87"/><text x="380" y="178" text-anchor="middle" font-size="12" fill="white">PostgreSQL</text>
+        <rect x="502" y="153" width="180" height="40" rx="7" fill="#168b87"/><text x="592" y="178" text-anchor="middle" font-size="12" fill="white">pgAdmin</text>
+        <rect x="16" y="233" width="728" height="112" rx="10" fill="#f7f4fb" stroke="#d9cde8"/><text x="32" y="256" font-size="13" font-weight="700" fill="#72519b">OBSERVABILITY (INTERNAL)</text>
+        <rect x="54" y="278" width="145" height="42" rx="7" fill="#72519b"/><text x="126" y="304" text-anchor="middle" font-size="12" fill="white">Exporters + cAdvisor</text>
+        <rect x="232" y="278" width="132" height="42" rx="7" fill="#72519b"/><text x="298" y="304" text-anchor="middle" font-size="12" fill="white">Prometheus</text>
+        <rect x="398" y="278" width="132" height="42" rx="7" fill="#72519b"/><text x="464" y="304" text-anchor="middle" font-size="12" fill="white">Grafana</text>
+        <rect x="564" y="278" width="132" height="42" rx="7" fill="#72519b"/><text x="630" y="304" text-anchor="middle" font-size="12" fill="white">Loki + Promtail</text>
+        <path d="M380 88v42H168v18M380 130v18M380 130h212v18" fill="none" stroke="#58718f" stroke-width="2" marker-end="url(#arrow)"/>
+        <path d="M168 193v57h130v28M380 193v57h-82M592 193v57h-128v28" fill="none" stroke="#58718f" stroke-width="2" marker-end="url(#arrow)"/>
+        <path d="M364 299h30" fill="none" stroke="#58718f" stroke-width="2" marker-end="url(#arrow)"/>
+      </svg>
+    </div>
+    <h3>2.1 Luồng request</h3>
+    <ol>
+      <li>Trình duyệt kết nối HTTPS tới Nginx ở cổng 8443.</li>
+      <li>Nginx thêm security headers và chuyển tiếp HTTP nội bộ tới Gunicorn.</li>
+      <li>Flask kiểm tra và xử lý nghiệp vụ; psycopg kết nối PostgreSQL qua mạng data.</li>
+      <li>Ứng dụng ghi access/error logs ra stdout/stderr; Promtail phát hiện container và gửi log tới Loki.</li>
+      <li>Prometheus scrape endpoint ứng dụng/exporter định kỳ; Grafana truy vấn Prometheus và Loki.</li>
+    </ol>
+    <p class="small muted">Các cổng chỉ được publish rõ trong Compose: HTTPS 8443, pgAdmin 5050, Grafana 3000, Prometheus 9090; tất cả bind 127.0.0.1.</p>
+    <span class="page-no">04</span>
+  </section>
+
+  <section class="sheet">
+    <div class="eyebrow">Chương 3</div><div class="rule"></div>
+    <h2>Ứng dụng, PostgreSQL và pgAdmin</h2>
+    <h3>3.1 Image và cấu hình chạy</h3>
+    <p>Dockerfile dựa trên Python slim, cài thư viện từ <code>requirements.txt</code>, sao chép mã ứng dụng và giao diện, rồi chạy Gunicorn với hai worker. Ứng dụng chạy bằng UID/GID 10001, filesystem root ở chế độ chỉ đọc và thư mục tạm được giới hạn bằng tmpfs. Compose đợi healthcheck PostgreSQL thành công trước khi chạy lệnh khởi tạo schema. Gunicorn phục vụ ở mạng nội bộ; không mở port 5000 ra host để buộc request người dùng đi qua reverse proxy.</p>
+    <h3>3.2 Mô hình dữ liệu</h3>
+    <table><tr><th>Bảng</th><th>Vai trò</th><th>Quan hệ</th></tr>
+      <tr><td>customers</td><td>Hồ sơ khách hàng</td><td>1-n invoices</td></tr>
+      <tr><td>products</td><td>Sản phẩm, SKU, giá và tồn kho</td><td>1-n invoice_items</td></tr>
+      <tr><td>invoices</td><td>Mã hóa đơn, ngày, tổng, đã thu, trạng thái</td><td>n-1 customers; 1-n items/payments</td></tr>
+      <tr><td>invoice_items</td><td>Chi tiết sản phẩm tại thời điểm lập</td><td>product_id có thể NULL khi xóa sản phẩm</td></tr>
+      <tr><td>payments</td><td>Lịch sử thu tiền và phương thức</td><td>n-1 invoices</td></tr>
+    </table>
+    <p>Khóa chính dùng identity; khóa ngoại bảo vệ tính toàn vẹn. Xóa hóa đơn áp dụng cascade với chi tiết/thanh toán; khi xóa sản phẩm, snapshot tên và đơn giá trong chi tiết vẫn lưu. Tài khoản <code>billing_app</code> chỉ dùng cho ứng dụng, còn <code>billing_metrics</code> có quyền monitor riêng để exporter đọc chỉ số. Tài khoản bootstrap PostgreSQL không được dùng trong cấu hình ứng dụng.</p>
+    <h3>3.3 pgAdmin và dữ liệu cũ</h3>
+    <p>pgAdmin đăng ký sẵn server nội bộ tên Billing PostgreSQL. Người học đăng nhập giao diện bằng credential pgAdmin trong `.env`, sau đó nhập mật khẩu <code>APP_DB_PASSWORD</code> khi kết nối server DB. Cổng PostgreSQL không được publish. Nếu dự án có file SQLite cũ, startup chỉ nhập dữ liệu khi database PostgreSQL còn trống; import đọc file ở chế độ chỉ đọc, theo thứ tự khóa ngoại và đặt lại identity sequence. Nếu không có file hoặc DB đã có dữ liệu, việc import không chạy lại.</p>
+    <div class="placeholder"><div><strong>Hình 3.1 — Chèn ảnh pgAdmin</strong>Chụp cây server đã kết nối và danh sách các bảng trong schema public.<br>Không hiển thị mật khẩu hoặc nội dung `.env` trong ảnh.</div></div>
+    <span class="page-no">05</span>
+  </section>
+
+  <section class="sheet">
+    <div class="eyebrow">Chương 4</div><div class="rule"></div>
+    <h2>Nginx reverse proxy và HTTPS</h2>
+    <h3>4.1 Cấu hình reverse proxy</h3>
+    <p>Nginx là điểm vào duy nhất cho website. Virtual host TLS lắng nghe cổng 8443, chuyển tiếp request tới <code>billing:5000</code> bằng DNS service name trong Docker network và gửi các header Host, X-Real-IP, X-Forwarded-For, X-Forwarded-Proto. Giới hạn body 1 MB, timeout kết nối 5 giây và timeout đọc 30 giây giúp giới hạn request bất thường cũng như lỗi backend kéo dài.</p>
+    <h3>4.2 Chứng chỉ và TLS</h3>
+    <p>Container dùng image Nginx unprivileged. Khi khởi chạy, OpenSSL sinh chứng chỉ RSA 2048-bit có SAN cho <code>localhost</code> và <code>127.0.0.1</code>, lưu trong tmpfs của container; private key không nằm trong Git hoặc volume dữ liệu lâu dài. Nginx bật TLS 1.2/1.3, session cache và tắt server tokens. Vì CA tự ký không được tin cậy bởi trình duyệt, cảnh báo certificate là dự kiến trong bài lab.</p>
+    <h3>4.3 Security headers</h3>
+    <table><tr><th>Header</th><th>Mục đích</th></tr>
+      <tr><td>Strict-Transport-Security</td><td>Yêu cầu trình duyệt dùng HTTPS trong thời gian hiệu lực.</td></tr>
+      <tr><td>Content-Security-Policy</td><td>Giới hạn nguồn script/style/connect và chặn nhúng frame.</td></tr>
+      <tr><td>X-Frame-Options: DENY</td><td>Giảm nguy cơ clickjacking.</td></tr>
+      <tr><td>X-Content-Type-Options: nosniff</td><td>Không cho trình duyệt đoán MIME type.</td></tr>
+      <tr><td>Referrer-Policy / Permissions-Policy</td><td>Giảm dữ liệu referrer và vô hiệu hóa cảm biến không dùng.</td></tr>
+    </table>
+    <p>Ứng dụng hiện có inline event handlers, do đó CSP có <code>unsafe-inline</code> cho script/style để duy trì tương thích. Đây là thỏa hiệp cho giao diện học tập; ứng dụng production nên chuyển event handlers và style inline ra tệp riêng để loại bỏ ngoại lệ này. HSTS chỉ phù hợp trong phạm vi demo HTTPS; không bật preload trên tên miền công khai nếu chưa có TLS hợp lệ.</p>
+    <div class="placeholder"><div><strong>Hình 4.1 — Chèn minh chứng reverse proxy</strong>Chụp website mở tại <code>https://localhost:8443</code> và kết quả kiểm tra response headers trong DevTools hoặc curl.</div></div>
+    <span class="page-no">06</span>
+  </section>
+
+  <section class="sheet">
+    <div class="eyebrow">Chương 5</div><div class="rule"></div>
+    <h2>Giám sát Prometheus và Grafana</h2>
+    <h3>5.1 Thu thập metrics</h3>
+    <p>Flask xuất <code>billing_http_requests_total</code> theo method, endpoint và status code; histogram <code>billing_http_request_duration_seconds</code> hỗ trợ tính percentile độ trễ. Endpoint /metrics không được expose qua cổng host riêng và chỉ các service cùng mạng observability truy cập. Prometheus scrape mỗi 15 giây bốn nhóm: web, Nginx exporter, PostgreSQL exporter và cAdvisor. Cấu hình thêm Prometheus self-scrape để kiểm tra chính collector.</p>
+    <ul>
+      <li>Web: lưu lượng request và histogram thời gian xử lý.</li>
+      <li>Nginx: số kết nối active, reading, writing và waiting qua stub_status.</li>
+      <li>PostgreSQL: trạng thái exporter/DB, số kết nối và các metric database theo quyền monitor.</li>
+      <li>Container: CPU, bộ nhớ và trạng thái container qua cAdvisor.</li>
+    </ul>
+    <h3>5.2 Dashboard</h3>
+    <p>Grafana provision datasource Prometheus và Loki từ file cấu hình được mount read-only. Dashboard “Billing System Overview” được định nghĩa bằng JSON trong repository: tốc độ request, p95 latency, CPU/bộ nhớ container, PostgreSQL exporter và kết nối Nginx. Dashboard refresh 15 giây, giúp tái tạo nhất quán sau khi xóa container. Tài khoản admin lấy từ `.env`; self-signup bị tắt.</p>
+    <h3>5.3 Truy vấn PromQL minh họa</h3>
+    <pre>sum(rate(billing_http_requests_total[5m]))
+histogram_quantile(0.95,
+  sum(rate(billing_http_request_duration_seconds_bucket[5m])) by (le))
+sum(rate(container_cpu_usage_seconds_total{name=~"/.+"}[5m])) by (name)
+pg_up
+nginx_connections_active</pre>
+    <p>Dashboard cần thời gian và request thực tế để biểu đồ có dữ liệu. Nếu target DOWN, xem **Status → Targets**, kiểm tra DNS/service, `docker compose ps`, healthcheck, exporter credentials và log Prometheus. cAdvisor trên Docker Desktop có thể báo thiếu một số chỉ số host do khác biệt nền tảng; đánh giá chính container Linux do Docker quản lý.</p>
+    <div class="placeholder"><div><strong>Hình 5.1 — Chèn ảnh Prometheus Targets</strong>Chụp màn hình thể hiện các job <code>billing-web</code>, <code>nginx</code>, <code>postgres</code> và <code>containers</code> ở trạng thái UP.</div></div>
+    <span class="page-no">07</span>
+  </section>
+
+  <section class="sheet">
+    <div class="eyebrow">Chương 6</div><div class="rule"></div>
+    <h2>Log tập trung Loki và Promtail</h2>
+    <h3>6.1 Thu thập và lưu trữ</h3>
+    <p>Container ghi log ra stdout/stderr theo chuẩn Docker. Promtail dùng Docker service discovery thông qua Docker socket, lấy log stream và metadata Compose, sau đó gắn nhãn <code>compose_service</code> và <code>container</code>. Allowlist giới hạn dịch vụ được thu thập ở web, Nginx, DB, pgAdmin, Grafana, Prometheus và Loki. Promtail gửi batch tới Loki qua HTTP nội bộ; Loki lưu index/chunk trong named volume, retention cấu hình một tuần cho bài lab.</p>
+    <p>Truy vấn bằng Grafana → Explore → Loki. Chọn khoảng thời gian gần đây; mở website hoặc gọi API để phát sinh log. Nhãn có cardinality thấp hơn việc gắn mỗi URL/id vào label. Nội dung log nên tránh mật khẩu, token, email/PII không cần thiết. Cần kiểm tra log exporter và collector nếu Explore không có stream.</p>
+    <h3>6.2 Truy vấn LogQL mẫu</h3>
+    <table><tr><th>Mục đích</th><th>LogQL</th></tr>
+      <tr><td>Xem log ứng dụng</td><td><code>{compose_service="billing"}</code></td></tr>
+      <tr><td>Lọc request Nginx GET</td><td><code>{compose_service="nginx"} |= "GET"</code></td></tr>
+      <tr><td>Tìm lỗi PostgreSQL</td><td><code>{compose_service="db"} |~ "(?i)error|fatal"</code></td></tr>
+    </table>
+    <p>Truy vấn thứ nhất hữu ích để xem log chung của backend; truy vấn thứ hai lọc access log theo request GET; truy vấn thứ ba dùng regex không phân biệt hoa/thường để phát hiện thông báo ERROR hoặc FATAL. Có thể thêm bộ lọc theo thời gian, ví dụ last 15 minutes. Chụp ảnh mỗi truy vấn sau khi thực thi và có kết quả; không dùng ảnh cấu hình chưa chạy như minh chứng hoạt động.</p>
+    <div class="callout"><strong>Giới hạn an ninh.</strong> Docker socket là giao diện điều khiển Docker host; mount read-only không giới hạn các lệnh API có thể gửi qua socket. Đây là rủi ro đặc quyền của cách thu log demo. Production nên chuyển sang agent/driver được kiểm soát chặt, remote logging hoặc cơ chế host log forwarding riêng.</div>
+    <div class="placeholder"><div><strong>Hình 6.1 — Chèn ảnh Grafana Explore</strong>Chụp một truy vấn LogQL có label <code>compose_service</code> và log kết quả thực tế.</div></div>
+    <span class="page-no">08</span>
+  </section>
+
+  <section class="sheet">
+    <div class="eyebrow">Chương 7</div><div class="rule"></div>
+    <h2>Hardening, quyền và rủi ro</h2>
+    <table><tr><th>Biện pháp</th><th>Triển khai</th><th>Giá trị</th></tr>
+      <tr><td>Non-root</td><td>Flask UID 10001; Nginx unprivileged; PostgreSQL chạy user postgres của image.</td><td>Giảm tác động khi tiến trình ứng dụng bị khai thác.</td></tr>
+      <tr><td>Capability</td><td>Ứng dụng, exporters, Prometheus, Loki, Grafana bỏ capabilities; cAdvisor chỉ được cấp SYS_ADMIN, SYS_PTRACE, DAC_READ_SEARCH để đọc metrics host.</td><td>Giảm quyền kernel không cần thiết; cAdvisor là ngoại lệ có đặc quyền cao hơn.</td></tr>
+      <tr><td>Filesystem</td><td>Container web và Nginx read-only; tmpfs giới hạn cho file tạm/TLS.</td><td>Giảm khả năng ghi mã độc vào image layer.</td></tr>
+      <tr><td>Network</td><td>Database network internal; observability network internal; DB không publish port.</td><td>Giảm bề mặt truy cập từ host/LAN.</td></tr>
+      <tr><td>Secrets</td><td>Random password cục bộ trong .env bị gitignore; role app và metrics riêng.</td><td>Tránh credential tĩnh trong Git và hạn quyền DB.</td></tr>
+      <tr><td>HTTP headers</td><td>Nginx TLS và CSP, HSTS, X-Frame-Options, nosniff, Referrer/Permissions Policy.</td><td>Giảm nhóm rủi ro phía trình duyệt.</td></tr>
+      <tr><td>Host ports</td><td>Giao diện quản trị chỉ bind 127.0.0.1.</td><td>Không tự công khai lên interface mạng LAN.</td></tr>
+    </table>
+    <h3>7.1 Những giới hạn chưa được giải quyết</h3>
+    <p>Ứng dụng hiện không có xác thực người dùng/role nghiệp vụ, nên chỉ phù hợp demo cục bộ. Chứng chỉ self-signed không xác thực danh tính domain; secret trong environment có thể đọc bởi người có quyền quản trị Docker. cAdvisor cần quyền đọc thông tin host và được cấp thêm SYS_ADMIN/SYS_PTRACE/DAC_READ_SEARCH, vì vậy đây là thành phần đặc quyền hơn và cần được đánh giá lại trên production. Promtail dùng Docker socket với quyền kiểm soát lớn; mount chỉ đọc không giới hạn các API quản trị mà client có thể gửi qua socket. Đây là ngoại lệ đáng chú ý so với nguyên tắc least privilege. CSP còn cho phép inline script do frontend có inline event handler. Các image được pin tag nhưng chưa pin digest và cần cập nhật/quét CVE định kỳ.</p>
+    <h3>7.2 Biện pháp bổ sung khi vận hành thật</h3>
+    <p>Bổ sung đăng nhập, CSRF/rate limiting, backup mã hóa, quản lý secret chuyên dụng, chứng chỉ từ CA tin cậy, firewall, pin digest, image scan, cập nhật định kỳ, cảnh báo metrics, kiểm tra phục hồi backup và log retention phù hợp. Không publish pgAdmin, Grafana hoặc Prometheus ra Internet; đặt xác thực mạnh và VPN/SSO nếu cần truy cập từ xa.</p>
+    <span class="page-no">09</span>
+  </section>
+
+  <section class="sheet">
+    <div class="eyebrow">Chương 8</div><div class="rule"></div>
+    <h2>Triển khai và kiểm thử</h2>
+    <h3>8.1 Trình tự chạy</h3>
+    <ol>
+      <li>Cài Docker Desktop/Engine và bật Compose v2.</li>
+      <li>Chạy script sinh credential: <code>.\scripts\init-env.ps1</code> trên PowerShell hoặc <code>sh scripts/init-env.sh</code> trên Bash.</li>
+      <li>Kiểm tra cấu hình mở rộng: <code>docker compose config</code>.</li>
+      <li>Build và chạy: <code>docker compose up --build -d</code>.</li>
+      <li>Kiểm tra: <code>docker compose ps</code>, sau đó mở HTTPS và các console localhost.</li>
+      <li>Tạo traffic, kiểm tra target/dashboard/LogQL và ghi lại ảnh minh chứng.</li>
+    </ol>
+    <h3>8.2 Bảng kiểm nghiệm thu</h3>
+    <table><tr><th>Kiểm tra</th><th>Lệnh / thao tác</th><th>Kết quả cần ghi nhận</th><th>Trạng thái</th></tr>
+      <tr><td>Stack</td><td><code>docker compose ps</code></td><td>Services Running/Healthy</td><td>[ĐIỀN]</td></tr>
+      <tr><td>Web + HTTPS</td><td>Mở <code>https://localhost:8443</code></td><td>Trang trả về, self-signed cảnh báo dự kiến</td><td>[ĐIỀN]</td></tr>
+      <tr><td>DB health</td><td><code>/health</code> qua Nginx</td><td>JSON status/database = ok</td><td>[ĐIỀN]</td></tr>
+      <tr><td>pgAdmin</td><td>Đăng nhập và mở server</td><td>Thấy DB billing và bảng ứng dụng</td><td>[ĐIỀN]</td></tr>
+      <tr><td>Metrics</td><td>Prometheus → Status → Targets</td><td>Targets web, nginx, postgres, containers UP</td><td>[ĐIỀN]</td></tr>
+      <tr><td>Grafana</td><td>Billing System Overview</td><td>Datasource provision, chart khi có traffic</td><td>[ĐIỀN]</td></tr>
+      <tr><td>LogQL</td><td>Ba truy vấn trong Chương 6</td><td>Trả về stream/log thực tế</td><td>[ĐIỀN]</td></tr>
+      <tr><td>Hardening</td><td>Header, user, ports, networks</td><td>Đối chiếu Compose và response</td><td>[ĐIỀN]</td></tr>
+    </table>
+    <div class="two-shot">
+      <div class="placeholder"><div><strong>Hình 8.1 — Thêm ảnh Docker Compose</strong>Ảnh trạng thái container, không để lộ biến môi trường.</div></div>
+      <div class="placeholder"><div><strong>Hình 8.2 — Thêm ảnh website</strong>Ảnh trang dashboard qua HTTPS reverse proxy.</div></div>
+    </div>
+    <span class="page-no">10</span>
+  </section>
+
+  <section class="sheet">
+    <div class="eyebrow">Chương 9</div><div class="rule"></div>
+    <h2>Vận hành, dữ liệu và xử lý sự cố</h2>
+    <h3>9.1 Các thao tác vận hành</h3>
+    <pre>docker compose ps
+docker compose logs --tail=100 billing db nginx
+docker compose logs -f promtail loki
+docker compose stop
+docker compose start
+docker compose down</pre>
+    <p>Lệnh <code>down</code> xóa container/network nhưng giữ named volumes. Không dùng <code>down -v</code> khi cần giữ database, dashboard và lịch sử metrics/log; lệnh này xóa volumes. Trước khi thay đổi Compose nên xem <code>docker compose config</code>, lưu bản cấu hình, rồi quan sát healthcheck/log sau khi khởi động lại.</p>
+    <h3>9.2 Sao lưu và phục hồi PostgreSQL</h3>
+    <p>Tạo bản sao lưu logic bằng công cụ pg_dump từ container PostgreSQL hoặc pgAdmin, lưu ngoài Docker host và bảo vệ bằng quyền truy cập thích hợp. Ví dụ tạo SQL dump:</p>
+    <pre>docker compose exec -T db sh -c \
+  'pg_dump -U "$POSTGRES_USER" -d billing' &gt; billing-backup.sql</pre>
+    <p>Phục hồi cần database đích phù hợp và kiểm tra kết quả sau restore; thử phục hồi định kỳ trên môi trường riêng. Không lưu backup có dữ liệu cá nhân vào repository công khai. Tệp SQLite gốc chỉ được dùng làm nguồn migration một lần; dữ liệu hoạt động sau triển khai nằm trong named volume PostgreSQL.</p>
+    <h3>9.3 Xử lý tình huống phổ biến</h3>
+    <ul>
+      <li><strong>Compose báo thiếu biến:</strong> chạy script tạo `.env`, kiểm tra file tồn tại và không rỗng.</li>
+      <li><strong>Website không mở:</strong> kiểm tra Nginx/Flask healthy, port 8443 chưa bị chiếm, đọc logs và xác nhận backend /health.</li>
+      <li><strong>pgAdmin lỗi đăng nhập DB:</strong> dùng đúng app password trong `.env`; DB role được tạo khi volume khởi tạo đầu tiên.</li>
+      <li><strong>Target DOWN:</strong> xác minh service DNS/network và exporter status, sau đó đọc logs Prometheus.</li>
+      <li><strong>Loki không có log:</strong> kiểm tra Promtail quyền socket, thời gian truy vấn, service allowlist và logs Loki.</li>
+      <li><strong>cAdvisor thiếu dữ liệu:</strong> Docker Desktop có thể giới hạn metric host; kiểm tra container cAdvisor và dùng Linux host để đánh giá đầy đủ.</li>
+    </ul>
+    <span class="page-no">11</span>
+  </section>
+
+  <section class="sheet">
+    <div class="eyebrow">Kết luận</div><div class="rule"></div>
+    <h2>Kết luận và tài liệu tham khảo</h2>
+    <p>Đề tài đã thiết kế một bộ triển khai có thể tái tạo cho ứng dụng Billing Management System. Docker Compose mô tả ứng dụng, database, công cụ quản trị, reverse proxy, metrics, dashboard và log tập trung. PostgreSQL tách biệt khỏi host port; Nginx cung cấp điểm truy cập HTTPS tự ký và security headers; Prometheus thu thập chỉ số web/Nginx/PostgreSQL/container; Grafana provision dashboard; Promtail và Loki hỗ trợ truy vấn log bằng LogQL. Các lớp non-root, read-only filesystem, mạng nội bộ, capability drop, secrets ngoài Git và giới hạn host binding giảm bề mặt phơi nhiễm trong phạm vi bài lab.</p>
+    <p>Qua triển khai, người thực hiện cần nắm luồng kết nối giữa service, phân biệt metrics với logs, hiểu healthcheck không thay thế kiểm thử nghiệp vụ, và nhận biết các giới hạn của môi trường Docker Desktop. Những ngoại lệ được ghi rõ gồm chứng chỉ tự ký, ứng dụng chưa có xác thực, CSP inline và quyền Docker socket của Promtail. Vì vậy, kết quả có giá trị như môi trường học tập, không phải cấu hình production đã được chứng nhận.</p>
+    <h3>Tài liệu tham khảo</h3>
+    <ol>
+      <li>Docker, “Docker Compose documentation”, <span class="small">https://docs.docker.com/compose/</span>.</li>
+      <li>PostgreSQL Global Development Group, “PostgreSQL Documentation”, <span class="small">https://www.postgresql.org/docs/</span>.</li>
+      <li>Nginx, “NGINX documentation”, <span class="small">https://nginx.org/en/docs/</span>.</li>
+      <li>Prometheus, “Prometheus documentation”, <span class="small">https://prometheus.io/docs/</span>.</li>
+      <li>Grafana Labs, “Grafana, Loki and Promtail documentation”, <span class="small">https://grafana.com/docs/</span>.</li>
+      <li>Flask, “Flask documentation”, <span class="small">https://flask.palletsprojects.com/</span>.</li>
+    </ol>
+    <h3>Checklist trước khi nộp</h3>
+    <ul>
+      <li>Điền tên trường, họ tên, mã số sinh viên, lớp và giảng viên trên bìa.</li>
+      <li>Thực sự chạy toàn bộ stack và điền kết quả từng dòng kiểm thử.</li>
+      <li>Thay khung minh chứng bằng ảnh tự chụp từ môi trường của mình.</li>
+      <li>Kiểm tra không có `.env`, password, backup hoặc dữ liệu riêng tư trong Git.</li>
+      <li>In/xuất trang này bằng trình duyệt: Print → Save as PDF, khổ A4.</li>
+    </ul>
+    <div class="signatures"><div>Sinh viên thực hiện<br><strong>[HỌ VÀ TÊN]</strong></div><div>Giảng viên hướng dẫn<br><strong>[HỌ VÀ TÊN]</strong></div></div>
+    <span class="page-no">12</span>
+  </section>
+</body>
+</html>
