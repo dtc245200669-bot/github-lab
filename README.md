@@ -12,7 +12,7 @@ Docker logs ──> Promtail ──> Loki ────────────�
 pgAdmin ──> PostgreSQL
 ```
 
-Mạng `edge` phục vụ Nginx; `data` và `observability` là mạng nội bộ Docker. PostgreSQL không publish cổng ra máy host. pgAdmin, Grafana và Prometheus chỉ bind vào `127.0.0.1`.
+Mạng `edge` phục vụ Nginx; `data` và `observability` là mạng nội bộ Docker. Mạng `host_access` kết nối riêng pgAdmin, Grafana và Prometheus với các cổng chỉ bind vào `127.0.0.1`. PostgreSQL không publish cổng ra máy host.
 
 ## Yêu cầu
 
@@ -111,7 +111,7 @@ docker compose logs -f billing
 app.py                       Flask API, PostgreSQL/SQLite adapter, /health, /metrics
 Dockerfile                   Image Flask/Gunicorn non-root
 docker-compose.yml           Toàn bộ services, networks, volumes và healthchecks
-infra/nginx/                 HTTPS reverse proxy, headers, nginx status
+infra/nginx/                 Image Nginx unprivileged có OpenSSL, HTTPS, headers
 infra/postgres/              Tạo role ứng dụng và metrics
 infra/pgadmin/               Cấu hình server đăng ký trước
 infra/prometheus/             Scrape targets cho web, Nginx, PostgreSQL, cAdvisor
@@ -119,7 +119,7 @@ infra/grafana/                Provision datasource và dashboard
 infra/loki/                   Lưu trữ log tập trung
 infra/promtail/               Thu thập Docker logs, giới hạn service allowlist
 scripts/                      Sinh .env an toàn
-BAO-CAO.html                  Báo cáo A4 13 trang, gồm ảnh giao diện local đã chụp
+BAO-CAO.html                  Báo cáo A4 16 trang, gồm ảnh giao diện local và runtime
 evidence/                     Ảnh chụp thật; ảnh khách hàng đã làm mờ thông tin
 ```
 
@@ -133,4 +133,4 @@ c3c2da0 feat: add Prometheus and Grafana monitoring
 f909bbc feat: add Loki logging and deployment report
 ```
 
-Tài liệu [`BAO-CAO.html`](./BAO-CAO.html) có 13 trang A4 và ảnh tự chụp từ ứng dụng local. Ảnh hiện có là giao diện ở `http://127.0.0.1:5000` chạy SQLite; chưa phải minh chứng Docker Compose. Cần bổ sung ảnh pgAdmin, Nginx/HTTPS, Prometheus, Grafana và Loki sau khi các container chạy thành công. Lần kiểm tra hiện tại `docker compose config --quiet` hợp lệ, nhưng Docker Desktop Linux engine vẫn `starting` và trả HTTP 500; xem Chương 8 trong báo cáo để biết mục nào chưa thể xác nhận.
+Tài liệu [`BAO-CAO.html`](./BAO-CAO.html) có 16 trang A4 và phân biệt ảnh local SQLite với ảnh runtime Docker Compose. Minh chứng runtime gồm website HTTPS (`evidence/06-website-https.png`), hai ảnh Grafana dashboard (`evidence/07-grafana-dashboard.png`, `evidence/11-grafana-database-container.png`), pgAdmin schema (`evidence/08-pgadmin-schema.png`), Loki Explore (`evidence/09-loki-explore.png`) và Prometheus Targets (`evidence/05-prometheus-targets.png`). Stack đã được build; HTTPS health trả HTTP 200, cả năm targets UP, pgAdmin kết nối PostgreSQL và Loki trả log qua LogQL. Trước khi nộp, bổ sung thông tin cá nhân còn trống trên bìa/trang ký và chạy lại lệnh demo trên máy trình bày.

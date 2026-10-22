@@ -41,7 +41,7 @@
       "fieldConfig": { "defaults": { "unit": "bytes" }, "overrides": [] },
       "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
       "id": 3,
-      "targets": [{ "expr": "sum(container_memory_working_set_bytes{name=~\"/.+\"}) by (name)", "legendFormat": "{{name}}", "refId": "A" }],
+      "targets": [{ "expr": "sum(container_memory_working_set_bytes)", "legendFormat": "all containers", "refId": "A" }],
       "title": "Container memory",
       "type": "timeseries"
     },
@@ -50,7 +50,7 @@
       "fieldConfig": { "defaults": { "unit": "percentunit" }, "overrides": [] },
       "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
       "id": 4,
-      "targets": [{ "expr": "sum(rate(container_cpu_usage_seconds_total{name=~\"/.+\"}[5m])) by (name)", "legendFormat": "{{name}}", "refId": "A" }],
+      "targets": [{ "expr": "sum(rate(container_cpu_usage_seconds_total[5m]))", "legendFormat": "all containers", "refId": "A" }],
       "title": "Container CPU",
       "type": "timeseries"
     },

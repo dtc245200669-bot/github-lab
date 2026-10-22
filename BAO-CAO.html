@@ -53,6 +53,7 @@
     .evidence-figure{min-width:0;margin:0;padding:6pt;border:1px solid var(--line);border-radius:6px;background:#fbfcfe}
     .evidence-figure img{display:block;width:100%;height:62mm;object-fit:contain;background:#f2f5f9}
     .evidence-figure figcaption{margin-top:5pt;color:var(--muted);font-size:8pt;line-height:1.35}
+    .runtime-shot img{height:200mm}
     .two-shot{display:grid;grid-template-columns:1fr 1fr;gap:9pt}
     .two-shot .placeholder{min-height:42mm}
     .page-no{position:absolute;right:20mm;bottom:9mm;color:#8290a2;font-size:8pt}
@@ -111,7 +112,7 @@
       <li>Hardening và phân tích rủi ro.</li><li>Triển khai, kiểm thử và minh chứng.</li>
       <li>Vận hành, sao lưu và kết luận.</li>
     </ol>
-    <p class="small muted">Cập nhật tài liệu: 22/10/2026. Mã số sinh viên được điền theo tài khoản GitHub cung cấp; bổ sung họ tên, lớp, trường và giảng viên trước khi nộp.</p>
+    <p class="small muted">Cập nhật tài liệu và kiểm thử runtime: 23/10/2026. Mã số sinh viên được điền theo tài khoản GitHub cung cấp; bổ sung họ tên, lớp, trường và giảng viên trước khi nộp.</p>
     <span class="page-no">02</span>
   </section>
 
@@ -144,7 +145,7 @@
   <section class="sheet">
     <div class="eyebrow">Chương 2</div><div class="rule"></div>
     <h2>Kiến trúc và luồng hoạt động</h2>
-    <p>Compose tạo ba mạng với mục tiêu khác nhau. Mạng <code>edge</code> dành cho entrypoint Nginx. Mạng <code>data</code> nội bộ nối Nginx, ứng dụng, pgAdmin và PostgreSQL. Mạng <code>observability</code> nội bộ nối exporters, Prometheus, Grafana, Loki, Promtail và các target metrics. Database không publish cổng ra host; các giao diện quản trị chỉ bind loopback.</p>
+    <p>Compose tạo bốn mạng với mục tiêu khác nhau. Mạng <code>edge</code> dành cho entrypoint Nginx. Mạng <code>data</code> nội bộ nối Nginx, ứng dụng, pgAdmin và PostgreSQL. Mạng <code>observability</code> nội bộ nối exporters, Prometheus, Grafana, Loki, Promtail và các target metrics. Mạng <code>host_access</code> nối riêng pgAdmin, Prometheus và Grafana tới các cổng loopback được publish; mạng này không thay thế hai mạng nội bộ. Database không publish cổng ra host.</p>
     <div class="diagram">
       <svg viewBox="0 0 760 370" role="img" aria-label="Sơ đồ kiến trúc các container Billing">
         <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 8 4 0 8Z" fill="#58718f"/></marker></defs>
@@ -192,7 +193,7 @@
     <p>Khóa chính dùng identity; khóa ngoại bảo vệ tính toàn vẹn. Xóa hóa đơn áp dụng cascade với chi tiết/thanh toán; khi xóa sản phẩm, snapshot tên và đơn giá trong chi tiết vẫn lưu. Tài khoản <code>billing_app</code> chỉ dùng cho ứng dụng, còn <code>billing_metrics</code> có quyền monitor riêng để exporter đọc chỉ số. Tài khoản bootstrap PostgreSQL không được dùng trong cấu hình ứng dụng.</p>
     <h3>3.3 pgAdmin và dữ liệu cũ</h3>
     <p>pgAdmin đăng ký sẵn server nội bộ tên Billing PostgreSQL. Người học đăng nhập giao diện bằng credential pgAdmin trong `.env`, sau đó nhập mật khẩu <code>APP_DB_PASSWORD</code> khi kết nối server DB. Cổng PostgreSQL không được publish. Nếu dự án có file SQLite cũ, startup chỉ nhập dữ liệu khi database PostgreSQL còn trống; import đọc file ở chế độ chỉ đọc, theo thứ tự khóa ngoại và đặt lại identity sequence. Nếu không có file hoặc DB đã có dữ liệu, việc import không chạy lại.</p>
-    <div class="runtime-note"><strong>Minh chứng pgAdmin:</strong> chưa thể chụp ảnh kết nối thật vì Docker Desktop Linux engine chưa khởi động. Cấu hình server khai báo trong <code>infra/pgadmin/servers.json</code>; cần bổ sung ảnh pgAdmin sau khi chạy stack.</div>
+    <div class="runtime-note"><strong>Kiểm thử runtime:</strong> pgAdmin đã kết nối server Billing PostgreSQL; database <code>billing</code>, schema <code>public</code> và năm bảng nghiệp vụ được xác nhận. Ảnh Object Explorer nằm tại Phụ lục C.</div>
     <span class="page-no">05</span>
   </section>
 
@@ -212,7 +213,7 @@
       <tr><td>Referrer-Policy / Permissions-Policy</td><td>Giảm dữ liệu referrer và vô hiệu hóa cảm biến không dùng.</td></tr>
     </table>
     <p>Ứng dụng hiện có inline event handlers, do đó CSP có <code>unsafe-inline</code> cho script/style để duy trì tương thích. Đây là thỏa hiệp cho giao diện học tập; ứng dụng production nên chuyển event handlers và style inline ra tệp riêng để loại bỏ ngoại lệ này. HSTS chỉ phù hợp trong phạm vi demo HTTPS; không bật preload trên tên miền công khai nếu chưa có TLS hợp lệ.</p>
-    <div class="runtime-note"><strong>Minh chứng Nginx/HTTPS:</strong> cấu hình đã có trong repository nhưng endpoint <code>https://localhost:8443</code> chưa hoạt động để chụp. Ảnh website local ở Phụ lục A không phải ảnh truy cập qua Nginx.</div>
+    <div class="runtime-note"><strong>Kiểm thử runtime:</strong> <code>https://localhost:8443/health</code> trả HTTP 200 và JSON xác nhận database ok. Đã kiểm tra HSTS, CSP, X-Frame-Options, nosniff, Referrer-Policy và Permissions-Policy. Trình duyệt cảnh báo CA tự ký là hành vi dự kiến; lệnh kiểm tra dùng <code>curl.exe -k</code>.</div>
     <span class="page-no">06</span>
   </section>
 
@@ -237,7 +238,7 @@ sum(rate(container_cpu_usage_seconds_total{name=~"/.+"}[5m])) by (name)
 pg_up
 nginx_connections_active</pre>
     <p>Dashboard cần thời gian và request thực tế để biểu đồ có dữ liệu. Nếu target DOWN, xem **Status → Targets**, kiểm tra DNS/service, `docker compose ps`, healthcheck, exporter credentials và log Prometheus. cAdvisor trên Docker Desktop có thể báo thiếu một số chỉ số host do khác biệt nền tảng; đánh giá chính container Linux do Docker quản lý.</p>
-    <div class="runtime-note"><strong>Minh chứng monitoring:</strong> dashboard và scrape targets đã khai báo trong cấu hình. Không có ảnh target UP vì Prometheus chưa chạy; không dùng ảnh cấu hình để thay cho minh chứng metrics thực tế.</div>
+    <div class="runtime-note"><strong>Kiểm thử runtime:</strong> Prometheus trả HTTP 200; cả năm scrape targets <code>billing-web</code>, <code>containers</code>, <code>nginx</code>, <code>postgres</code> và <code>prometheus</code> đều UP. Grafana dashboard được provision; sáu panel có dữ liệu, gồm request rate, p95, bộ nhớ/CPU container, <code>pg_up</code> và kết nối Nginx. Ảnh Targets ở Phụ lục B và dashboard ở Phụ lục D.</div>
     <span class="page-no">07</span>
   </section>
 
@@ -255,7 +256,7 @@ nginx_connections_active</pre>
     </table>
     <p>Truy vấn thứ nhất hữu ích để xem log chung của backend; truy vấn thứ hai lọc access log theo request GET; truy vấn thứ ba dùng regex không phân biệt hoa/thường để phát hiện thông báo ERROR hoặc FATAL. Có thể thêm bộ lọc theo thời gian, ví dụ last 15 minutes. Chụp ảnh mỗi truy vấn sau khi thực thi và có kết quả; không dùng ảnh cấu hình chưa chạy như minh chứng hoạt động.</p>
     <div class="callout"><strong>Giới hạn an ninh.</strong> Docker socket là giao diện điều khiển Docker host; mount read-only không giới hạn các lệnh API có thể gửi qua socket. Đây là rủi ro đặc quyền của cách thu log demo. Production nên chuyển sang agent/driver được kiểm soát chặt, remote logging hoặc cơ chế host log forwarding riêng.</div>
-    <div class="runtime-note"><strong>Minh chứng LogQL:</strong> ba truy vấn mẫu đã được ghi ở trên. Loki/Promtail chưa chạy để trả về log; cần chụp Grafana Explore sau khi Docker engine hoạt động.</div>
+    <div class="runtime-note"><strong>Kiểm thử runtime:</strong> endpoint readiness của Loki trả <code>ready</code>, labels API có <code>compose_service</code> và truy vấn <code>{compose_service="billing"}</code> trả về log request thật do Promtail gửi. Loki không publish cổng ra host; truy vấn kiểm thử được thực hiện từ Grafana Explore trên network nội bộ. Ảnh truy vấn LogQL nằm tại Phụ lục D.</div>
     <span class="page-no">08</span>
   </section>
 
@@ -266,13 +267,13 @@ nginx_connections_active</pre>
       <tr><td>Non-root</td><td>Flask UID 10001; Nginx unprivileged; PostgreSQL chạy user postgres của image.</td><td>Giảm tác động khi tiến trình ứng dụng bị khai thác.</td></tr>
       <tr><td>Capability</td><td>Ứng dụng, exporters, Prometheus, Loki, Grafana bỏ capabilities; cAdvisor chỉ được cấp SYS_ADMIN, SYS_PTRACE, DAC_READ_SEARCH để đọc metrics host.</td><td>Giảm quyền kernel không cần thiết; cAdvisor là ngoại lệ có đặc quyền cao hơn.</td></tr>
       <tr><td>Filesystem</td><td>Container web và Nginx read-only; tmpfs giới hạn cho file tạm/TLS.</td><td>Giảm khả năng ghi mã độc vào image layer.</td></tr>
-      <tr><td>Network</td><td>Database network internal; observability network internal; DB không publish port.</td><td>Giảm bề mặt truy cập từ host/LAN.</td></tr>
+      <tr><td>Network</td><td><code>data</code>/<code>observability</code> internal; <code>host_access</code> dành riêng cho UI publish loopback; DB không publish port.</td><td>Giới hạn inbound ở host; UI trên host_access vẫn có thể outbound.</td></tr>
       <tr><td>Secrets</td><td>Random password cục bộ trong .env bị gitignore; role app và metrics riêng.</td><td>Tránh credential tĩnh trong Git và hạn quyền DB.</td></tr>
       <tr><td>HTTP headers</td><td>Nginx TLS và CSP, HSTS, X-Frame-Options, nosniff, Referrer/Permissions Policy.</td><td>Giảm nhóm rủi ro phía trình duyệt.</td></tr>
       <tr><td>Host ports</td><td>Giao diện quản trị chỉ bind 127.0.0.1.</td><td>Không tự công khai lên interface mạng LAN.</td></tr>
     </table>
     <h3>7.1 Những giới hạn chưa được giải quyết</h3>
-    <p>Ứng dụng hiện không có xác thực người dùng/role nghiệp vụ, nên chỉ phù hợp demo cục bộ. Chứng chỉ self-signed không xác thực danh tính domain; secret trong environment có thể đọc bởi người có quyền quản trị Docker. cAdvisor cần quyền đọc thông tin host và được cấp thêm SYS_ADMIN/SYS_PTRACE/DAC_READ_SEARCH, vì vậy đây là thành phần đặc quyền hơn và cần được đánh giá lại trên production. Promtail dùng Docker socket với quyền kiểm soát lớn; mount chỉ đọc không giới hạn các API quản trị mà client có thể gửi qua socket. Đây là ngoại lệ đáng chú ý so với nguyên tắc least privilege. CSP còn cho phép inline script do frontend có inline event handler. Các image được pin tag nhưng chưa pin digest và cần cập nhật/quét CVE định kỳ.</p>
+    <p>Ứng dụng hiện không có xác thực người dùng/role nghiệp vụ, nên chỉ phù hợp demo cục bộ. Chứng chỉ self-signed không xác thực danh tính domain; secret trong environment có thể đọc bởi người có quyền quản trị Docker. Các UI trên mạng <code>host_access</code> có outbound networking, dù cổng host chỉ bind loopback; production nên giới hạn egress theo chính sách mạng. cAdvisor cần quyền đọc thông tin host và được cấp thêm SYS_ADMIN/SYS_PTRACE/DAC_READ_SEARCH, vì vậy đây là thành phần đặc quyền hơn và cần được đánh giá lại trên production. Promtail dùng Docker socket với quyền kiểm soát lớn; mount chỉ đọc không giới hạn các API quản trị mà client có thể gửi qua socket. Đây là ngoại lệ đáng chú ý so với nguyên tắc least privilege. CSP còn cho phép inline script do frontend có inline event handler. Các image được pin tag nhưng chưa pin digest và cần cập nhật/quét CVE định kỳ.</p>
     <h3>7.2 Biện pháp bổ sung khi vận hành thật</h3>
     <p>Bổ sung đăng nhập, CSRF/rate limiting, backup mã hóa, quản lý secret chuyên dụng, chứng chỉ từ CA tin cậy, firewall, pin digest, image scan, cập nhật định kỳ, cảnh báo metrics, kiểm tra phục hồi backup và log retention phù hợp. Không publish pgAdmin, Grafana hoặc Prometheus ra Internet; đặt xác thực mạnh và VPN/SSO nếu cần truy cập từ xa.</p>
     <span class="page-no">09</span>
@@ -294,14 +295,14 @@ nginx_connections_active</pre>
     <table><tr><th>Kiểm tra</th><th>Lệnh / thao tác</th><th>Kết quả cần ghi nhận</th><th>Trạng thái</th></tr>
       <tr><td>Compose</td><td><code>docker compose config --quiet</code></td><td>Cấu hình hợp lệ về cú pháp</td><td>ĐẠT (tĩnh)</td></tr>
       <tr><td>Ứng dụng local</td><td><code>http://127.0.0.1:5000</code></td><td>Trang local trả HTTP 200; dùng SQLite dev</td><td>ĐẠT (local)</td></tr>
-      <tr><td>Compose stack</td><td><code>docker compose up --build -d</code></td><td>Docker engine trả HTTP 500, Docker Desktop vẫn Starting</td><td>CHƯA CHẠY</td></tr>
-      <tr><td>HTTPS / pgAdmin</td><td>Cổng 8443 / 5050</td><td>Không có container để kiểm thử endpoint</td><td>CHƯA KIỂM THỬ</td></tr>
-      <tr><td>Metrics / Grafana</td><td>Prometheus targets / dashboard</td><td>Chưa có runtime metrics</td><td>CHƯA KIỂM THỬ</td></tr>
-      <tr><td>Loki / LogQL</td><td>Grafana Explore</td><td>Chưa có log stream từ Compose</td><td>CHƯA KIỂM THỬ</td></tr>
-      <tr><td>Hardening</td><td>Compose / Nginx headers</td><td>Cấu hình đọc/kiểm tra tĩnh; response HTTPS chưa xác nhận</td><td>ĐẠT (tĩnh)</td></tr>
+      <tr><td>Compose stack</td><td><code>docker compose up --build -d</code></td><td>11 service chạy; database, app, Nginx và cAdvisor healthy</td><td>ĐẠT (runtime)</td></tr>
+      <tr><td>HTTPS / pgAdmin</td><td>Cổng 8443 / 5050</td><td>HTTPS health HTTP 200, headers đầy đủ; pgAdmin HTTP 302 và server đã được nạp</td><td>ĐẠT (endpoint)</td></tr>
+      <tr><td>Metrics / Grafana</td><td>Prometheus targets / dashboard</td><td>5/5 targets UP; Grafana HTTP 200, dashboard provisioned</td><td>ĐẠT (runtime)</td></tr>
+      <tr><td>Loki / LogQL</td><td>Loki readiness / query_range</td><td>Loki ready; truy vấn billing trả về log Docker thật</td><td>ĐẠT (runtime)</td></tr>
+      <tr><td>Hardening</td><td>Compose / Nginx headers</td><td>Host ports bind loopback; HTTPS headers xác nhận bằng curl</td><td>ĐẠT (runtime + tĩnh)</td></tr>
     </table>
-    <div class="runtime-note"><strong>Trạng thái lần kiểm tra:</strong> Docker Compose config hợp lệ; website local trả HTTP 200. Docker Desktop vẫn báo <code>starting</code>, WSL distro <code>docker-desktop</code> ở trạng thái stopped và API Linux engine trả HTTP 500. Vì vậy stack chưa được build/run và các yêu cầu runtime còn phải demo, chụp ảnh sau khi sửa Docker Desktop.</div>
-    <p class="small muted">Ảnh chụp giao diện local thật nằm tại Phụ lục A. Chúng được chụp từ <code>http://127.0.0.1:5000</code> (chế độ SQLite local), không được xem là bằng chứng Nginx/PostgreSQL/monitoring đã chạy.</p>
+    <div class="runtime-note"><strong>Kết quả và xử lý lỗi:</strong> lần triển khai ngày 23/10/2026 phát hiện CRLF trong script tạo role PostgreSQL, row factory psycopg chưa xử lý câu lệnh DDL không có result columns, image Nginx thiếu OpenSSL và network nội bộ không forward được các UI ra host. Đã chuẩn hóa LF, sửa row factory, build Nginx unprivileged có OpenSSL và thêm mạng <code>host_access</code> riêng. Stack hiện chạy ổn định; volume PostgreSQL được giữ nguyên.</div>
+    <p class="small muted">Ảnh giao diện SQLite local nằm tại Phụ lục A; ảnh Prometheus Targets chạy trên Docker Compose nằm tại Phụ lục B. Không dùng ảnh local để thay cho bằng chứng backend/PostgreSQL.</p>
     <span class="page-no">10</span>
   </section>
 
@@ -349,9 +350,8 @@ docker compose down</pre>
     </ol>
     <h3>Checklist trước khi nộp</h3>
     <ul>
-      <li>Điền tên trường, họ tên, mã số sinh viên, lớp và giảng viên trên bìa.</li>
-      <li>Khởi động Docker engine, chạy toàn bộ stack và cập nhật những mục đang CHƯA KIỂM THỬ.</li>
-      <li>Tự chụp bổ sung pgAdmin, HTTPS headers, Prometheus targets, Grafana dashboard và LogQL sau khi chạy stack.</li>
+      <li>Điền họ tên, lớp, trường và giảng viên hướng dẫn trên bìa và trang ký.</li>
+      <li>Đối chiếu các ảnh runtime ở Phụ lục B–D với giao diện sau khi chạy stack trên máy demo.</li>
       <li>Kiểm tra không có `.env`, password, backup hoặc dữ liệu riêng tư trong Git.</li>
       <li>In/xuất trang này bằng trình duyệt: Print → Save as PDF, khổ A4.</li>
     </ul>
@@ -380,8 +380,59 @@ docker compose down</pre>
         <figcaption>Hình A.4 — Trang báo cáo; database demo hiện chưa có hóa đơn.</figcaption>
       </figure>
     </div>
-    <div class="runtime-note"><strong>Ảnh runtime còn thiếu:</strong> pgAdmin, Nginx/HTTPS, Prometheus Targets, Grafana Dashboard và Loki Explore chỉ có thể chụp sau khi Docker Desktop Linux engine hoạt động. Không thay các ảnh này bằng hình minh họa giả.</div>
+    <div class="runtime-note"><strong>Phân biệt minh chứng:</strong> ảnh local trong phụ lục này chạy SQLite. Kết quả Docker Compose được ghi riêng trong Phụ lục B; không dùng ảnh giao diện local để chứng minh HTTPS/PostgreSQL.</div>
     <span class="page-no">13</span>
+  </section>
+  <section class="sheet">
+    <div class="eyebrow">Phụ lục B</div><div class="rule"></div>
+    <h2>Minh chứng Docker Compose runtime</h2>
+    <p>Ảnh chụp Prometheus Status → Targets ngày 23/10/2026; cả năm scrape pools đều UP.</p>
+    <figure class="evidence-figure runtime-shot">
+      <img src="./evidence/05-prometheus-targets.png" alt="Prometheus Targets với năm scrape pools đều UP">
+      <figcaption>Hình B.1 — Prometheus Targets runtime; ảnh chụp từ stack Docker Compose, không phải ảnh cấu hình tĩnh.</figcaption>
+    </figure>
+    <p class="small muted">Các kết quả HTTPS, pgAdmin, Grafana và Loki được minh họa bổ sung ở Phụ lục C–D.</p>
+    <span class="page-no">14</span>
+  </section>
+  <section class="sheet">
+    <div class="eyebrow">Phụ lục C</div><div class="rule"></div>
+    <h2>Website HTTPS và công cụ quản trị DB</h2>
+    <p>Ảnh chụp từ Docker Compose ngày 23/10/2026. Website được truy cập qua Nginx HTTPS; pgAdmin kết nối PostgreSQL và mở database <code>billing</code>, schema <code>public</code>.</p>
+    <div class="two-shot">
+      <figure class="evidence-figure">
+        <img src="./evidence/06-website-https.png" alt="Website Billing chạy qua Nginx HTTPS với dữ liệu PostgreSQL">
+        <figcaption>Hình C.1 — Website qua <code>https://localhost:8443</code>; health endpoint và security headers đã kiểm tra bằng curl.</figcaption>
+      </figure>
+      <figure class="evidence-figure">
+        <img src="./evidence/08-pgadmin-schema.png" alt="pgAdmin kết nối Billing PostgreSQL và hiển thị các bảng">
+        <figcaption>Hình C.2 — pgAdmin kết nối Billing PostgreSQL; năm bảng customers, products, invoices, invoice_items và payments.</figcaption>
+      </figure>
+    </div>
+    <span class="page-no">15</span>
+  </section>
+  <section class="sheet">
+    <div class="eyebrow">Phụ lục D</div><div class="rule"></div>
+    <h2>Monitoring và log tập trung</h2>
+    <p>Ảnh chụp runtime từ Grafana và Prometheus; LogQL lọc các request health thành công trong 15 phút gần nhất.</p>
+    <div class="evidence-grid">
+      <figure class="evidence-figure">
+        <img src="./evidence/05-prometheus-targets.png" alt="Năm Prometheus targets đều UP">
+        <figcaption>Hình D.1 — Năm scrape targets đều UP.</figcaption>
+      </figure>
+      <figure class="evidence-figure">
+        <img src="./evidence/07-grafana-dashboard.png" alt="Grafana Billing dashboard với các biểu đồ metrics">
+        <figcaption>Hình D.2 — Dashboard gồm web, container, PostgreSQL và Nginx metrics.</figcaption>
+      </figure>
+      <figure class="evidence-figure">
+        <img src="./evidence/11-grafana-database-container.png" alt="Các panel CPU container, PostgreSQL availability và Nginx active connections">
+        <figcaption>Hình D.3 — Chi tiết panel CPU, PostgreSQL availability = 1 và Nginx active connections.</figcaption>
+      </figure>
+      <figure class="evidence-figure">
+        <img src="./evidence/09-loki-explore.png" alt="Grafana Explore chạy truy vấn LogQL và hiển thị logs">
+        <figcaption>Hình D.4 — LogQL <code>{compose_service="billing"} |= "GET /health"</code> trả về log thật.</figcaption>
+      </figure>
+    </div>
+    <span class="page-no">16</span>
   </section>
 </body>
 </html>
