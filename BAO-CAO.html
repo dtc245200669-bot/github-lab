@@ -67,7 +67,7 @@
     .cover-visual img{display:block;width:100%;height:32mm;object-fit:cover;object-position:center 20%;border:1px solid var(--line);background:#f2f5f9}
     .runtime-shot img{height:200mm}
     .query-evidence-list{display:grid;grid-template-columns:1fr;gap:8pt;margin-top:8pt}
-    .query-evidence-list img{height:82mm}
+    .query-evidence-list img{height:72mm}
     .two-shot{display:grid;grid-template-columns:1fr 1fr;gap:9pt}
     .two-shot .placeholder{min-height:42mm}
     .page-no{position:absolute;right:20mm;bottom:9mm;color:#8290a2;font-size:8pt}
@@ -509,10 +509,12 @@ docker compose down</pre>
       <figure class="evidence-figure">
         <img src="./evidence/12-logql-nginx.png" alt="Grafana Explore truy vấn log GET của Nginx">
         <figcaption>Hình E.1 — <code>{compose_service="nginx"} |= "GET"</code>. Loki trả về 5 log Nginx; truy vấn gồm request health HTTP 200.</figcaption>
+        <pre>172.25.0.1 - - [22/Oct/2026:18:10:25 +0000] "GET /health HTTP/1.1" 200 32</pre>
       </figure>
       <figure class="evidence-figure">
         <img src="./evidence/13-logql-database-errors.png" alt="Grafana Explore tìm ERROR hoặc FATAL trong log PostgreSQL">
         <figcaption>Hình E.2 — <code>{compose_service="db"} |~ "(?i)error|fatal"</code>. Có một dòng FATAL lịch sử trong lần restart để sửa cấu hình; PostgreSQL hiện healthy.</figcaption>
+        <pre>2026-10-22 17:25:53 UTC [157] FATAL: terminating connection due to administrator command</pre>
       </figure>
     </div>
     <span class="page-no">17</span>
