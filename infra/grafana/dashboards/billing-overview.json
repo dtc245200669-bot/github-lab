@@ -3,7 +3,10 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": { "type": "grafana", "uid": "-- Grafana --" },
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -19,65 +22,244 @@
   "links": [],
   "panels": [
     {
-      "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "fieldConfig": { "defaults": { "unit": "reqps" }, "overrides": [] },
-      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
       "id": 1,
-      "targets": [{ "expr": "sum(rate(billing_http_requests_total[5m]))", "legendFormat": "requests/sec", "refId": "A" }],
+      "targets": [
+        {
+          "expr": "sum(rate(billing_http_requests_total[5m]))",
+          "legendFormat": "requests/sec",
+          "refId": "A"
+        }
+      ],
       "title": "Web requests / second",
       "type": "timeseries"
     },
     {
-      "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "fieldConfig": { "defaults": { "unit": "s" }, "overrides": [] },
-      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
       "id": 2,
-      "targets": [{ "expr": "histogram_quantile(0.95, sum(rate(billing_http_request_duration_seconds_bucket[5m])) by (le))", "legendFormat": "p95", "refId": "A" }],
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(billing_http_request_duration_seconds_bucket[5m])) by (le))",
+          "legendFormat": "p95",
+          "refId": "A"
+        }
+      ],
       "title": "Web latency p95",
       "type": "timeseries"
     },
     {
-      "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "fieldConfig": { "defaults": { "unit": "bytes" }, "overrides": [] },
-      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 8
+      },
       "id": 3,
-      "targets": [{ "expr": "sum(container_memory_working_set_bytes)", "legendFormat": "all containers", "refId": "A" }],
+      "targets": [
+        {
+          "expr": "sum(container_memory_working_set_bytes)",
+          "legendFormat": "all containers",
+          "refId": "A"
+        }
+      ],
       "title": "Container memory",
       "type": "timeseries"
     },
     {
-      "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "fieldConfig": { "defaults": { "unit": "percentunit" }, "overrides": [] },
-      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 8
+      },
       "id": 4,
-      "targets": [{ "expr": "sum(rate(container_cpu_usage_seconds_total[5m]))", "legendFormat": "all containers", "refId": "A" }],
+      "targets": [
+        {
+          "expr": "sum(rate(container_cpu_usage_seconds_total[5m]))",
+          "legendFormat": "all containers",
+          "refId": "A"
+        }
+      ],
       "title": "Container CPU",
       "type": "timeseries"
     },
     {
-      "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "fieldConfig": { "defaults": { "unit": "short" }, "overrides": [] },
-      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 16 },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 16
+      },
       "id": 5,
-      "targets": [{ "expr": "pg_up", "legendFormat": "PostgreSQL exporter", "refId": "A" }],
+      "targets": [
+        {
+          "expr": "pg_up",
+          "legendFormat": "PostgreSQL exporter",
+          "refId": "A"
+        }
+      ],
       "title": "PostgreSQL availability",
       "type": "stat"
     },
     {
-      "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "fieldConfig": { "defaults": { "unit": "short" }, "overrides": [] },
-      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 16 },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 16
+      },
       "id": 6,
-      "targets": [{ "expr": "nginx_connections_active", "legendFormat": "active", "refId": "A" }],
+      "targets": [
+        {
+          "expr": "nginx_connections_active",
+          "legendFormat": "active",
+          "refId": "A"
+        }
+      ],
       "title": "Nginx active connections",
       "type": "stat"
+    },
+    {
+      "id": 7,
+      "gridPos": {
+        "x": 0,
+        "y": 24,
+        "h": 8,
+        "w": 12
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "legendFormat": "billing connections",
+          "expr": "pg_stat_database_numbackends{datname=\"billing\"}"
+        }
+      ],
+      "title": "PostgreSQL connections",
+      "datasource": {
+        "uid": "prometheus",
+        "type": "prometheus"
+      },
+      "fieldConfig": {
+        "overrides": [],
+        "defaults": {
+          "unit": "short"
+        }
+      },
+      "type": "timeseries"
+    },
+    {
+      "id": 8,
+      "gridPos": {
+        "x": 12,
+        "y": 24,
+        "h": 8,
+        "w": 12
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "legendFormat": "transactions/sec",
+          "expr": "sum(rate(pg_stat_database_xact_commit{datname=\"billing\"}[5m]))"
+        }
+      ],
+      "title": "PostgreSQL transactions/sec",
+      "datasource": {
+        "uid": "prometheus",
+        "type": "prometheus"
+      },
+      "fieldConfig": {
+        "overrides": [],
+        "defaults": {
+          "unit": "reqps"
+        }
+      },
+      "type": "timeseries"
     }
   ],
   "refresh": "15s",
   "schemaVersion": 39,
-  "tags": ["billing", "docker", "monitoring"],
-  "templating": { "list": [] },
-  "time": { "from": "now-1h", "to": "now" },
+  "tags": [
+    "billing",
+    "docker",
+    "monitoring"
+  ],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
   "timepicker": {},
   "timezone": "browser",
   "title": "Billing System Overview",
