@@ -128,9 +128,9 @@ evidence/                     Ảnh chụp thật; ảnh khách hàng đã làm 
 Repository được đồng bộ tại <https://github.com/dtc245200669-bot/github-lab>, nhánh `main`; đã có ba commit riêng cho web/reverse proxy, monitoring và logging/báo cáo. Không commit `.env`, mật khẩu hoặc SQLite database. Lịch sử commit hiện có:
 
 ```bash
-92255f5 feat: deploy hardened billing app behind HTTPS Nginx
-c3c2da0 feat: add Prometheus and Grafana monitoring
-f909bbc feat: add Loki logging and deployment report
+d290947 docs: enlarge evidence screenshots in report
+8de972a docs: include LogQL result samples
+775b0ae docs: add per-query Loki evidence
 ```
 
 Tài liệu [`BAO-CAO.html`](./BAO-CAO.html) có 24 trang A4; mỗi ảnh minh chứng được trình bày lớn trên trang riêng và phân biệt ảnh local SQLite với ảnh runtime Docker Compose. Minh chứng runtime gồm website HTTPS (`evidence/06-website-https.png`), Grafana dashboard (`evidence/07-grafana-dashboard.png`, `evidence/11-grafana-database-container.png`), pgAdmin schema (`evidence/08-pgadmin-schema.png`), Loki Explore (`evidence/09-loki-explore.png`), Prometheus Targets (`evidence/05-prometheus-targets.png`) và các truy vấn LogQL (`evidence/12-logql-nginx.png`, `evidence/13-logql-database-errors.png`). Stack đã được build; HTTPS health trả HTTP 200, cả năm targets UP, pgAdmin kết nối PostgreSQL và Loki trả log qua LogQL. Trước khi nộp, bổ sung thông tin cá nhân còn trống trên bìa/trang ký và chạy lại lệnh demo trên máy trình bày.
